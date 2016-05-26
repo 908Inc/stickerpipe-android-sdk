@@ -1,0 +1,57 @@
+apply plugin: 'com.android.library'
+apply plugin: 'maven'
+
+android {
+    compileSdkVersion 23
+    buildToolsVersion "23.0.3"
+
+    defaultConfig {
+        minSdkVersion 14
+        targetSdkVersion 23
+        versionCode 1
+        versionName rootProject.sdkVersionName
+    }
+    buildTypes {
+        release {
+            minifyEnabled rootProject.minifyEnableMode
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+}
+dependencies {
+    compile 'com.google.android.gms:play-services-gcm:8.4.0'
+    compile project(':stickerfactory')
+}
+
+// Publish archive task
+version = rootProject.sdkVersionName
+group = rootProject.groupName
+
+uploadArchives {
+    configuration = configurations.archives
+
+    repositories {
+        mavenDeployer {
+            repository(url:  rootProject.artifactoryUrl) {
+                authentication(userName: rootProject.artifactoryUsername, password: rootProject.artifactoryPass)
+            }
+            pom.project {
+                name "Stickerpipe GCM module"
+                packaging 'aar'
+                organization{
+                    name 'Stickerpipe'
+                    url 'http://stickerpipe.com'
+                }
+
+                licenses {
+                    license {
+                        name 'The Apache Software License, Version 2.0'
+                        url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+                        distribution 'repo'
+                        comments 'Copyright ' + Calendar.getInstance().get(Calendar.YEAR) + ', Stickerpipe.'
+                    }
+                }
+            }
+        }
+    }
+}

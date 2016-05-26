@@ -1,0 +1,99 @@
+<vc908.stickerfactory.ui.view.StickersKeyboardLayout
+    android:id="@+id/sizeNotifierLayout"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:targetApi="lollipop">
+
+    <RelativeLayout
+        android:id="@+id/chat_content"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="@color/primary"
+            android:elevation="@dimen/sp_toolbar_elevation"
+            app:contentInsetLeft="@dimen/material_72"
+            app:contentInsetStart="@dimen/material_72"
+            app:title="@string/app_name"/>
+
+        <ListView
+            android:id="@+id/listView"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_above="@+id/sender_section"
+            android:layout_below="@id/toolbar"
+            android:background="@color/chat_bg"
+            android:divider="@android:color/transparent"
+            android:dividerHeight="0dp"/>
+
+        <LinearLayout
+            android:id="@+id/linearLayout"
+            android:layout_width="0px"
+            android:layout_height="0px"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:orientation="vertical"/>
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/suggests_list"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/sp_suggest_container_height"
+            android:layout_above="@+id/sender_section"/>
+
+        <RelativeLayout
+            android:id="@+id/sender_section"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:background="@android:color/white">
+
+            <ImageButton
+                android:id="@+id/send_btn"
+                android:layout_width="@dimen/material_48"
+                android:layout_height="@dimen/material_48"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:background="?android:attr/selectableItemBackground"
+                android:src="@drawable/ic_send"/>
+
+            <EditText
+                android:id="@+id/editText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_toEndOf="@+id/stickers_btn"
+                android:layout_toLeftOf="@id/send_btn"
+                android:layout_toRightOf="@+id/stickers_btn"
+                android:background="@android:color/transparent"
+                android:gravity="center_vertical"
+                android:hint="@string/message"
+                android:nextFocusLeft="@id/editText"
+                android:nextFocusUp="@id/editText"
+                android:textSize="@dimen/text_14"/>
+
+
+            <vc908.stickerfactory.ui.view.BadgedStickersButton
+                android:id="@+id/stickers_btn"
+                android:layout_width="@dimen/material_48"
+                android:layout_height="@dimen/material_48"
+                android:layout_centerVertical="true"
+                android:background="?android:attr/selectableItemBackground"
+                android:tint="@color/sp_primary"/>
+
+        </RelativeLayout>
+    </RelativeLayout>
+
+    <FrameLayout
+        android:id="@+id/frame"
+        android:layout_width="match_parent"
+        android:layout_height="240dp"
+        android:layout_alignParentBottom="true"
+        android:visibility="gone"/>
+</vc908.stickerfactory.ui.view.StickersKeyboardLayout>

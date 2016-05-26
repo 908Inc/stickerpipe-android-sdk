@@ -1,0 +1,48 @@
+buildscript {
+    repositories {
+        jcenter()
+        maven {
+            url 'https://repos.zeroturnaround.com/nexus/content/repositories/zt-public-releases'
+        }
+    }
+    dependencies {
+        classpath 'com.android.tools.build:gradle:2.2.0-alpha1'
+        classpath 'me.tatarka:gradle-retrolambda:3.1.0'
+    }
+}
+
+allprojects {
+    repositories {
+        jcenter()
+    }
+}
+def configsPrivateFile = new File('configs.private.properties')
+def configsCommonFile = new File('configs.common.properties')
+
+Properties props = new Properties()
+try {
+    if (configsPrivateFile.exists()) {
+        props.load(configsPrivateFile.newDataInputStream())
+    } else if (configsCommonFile.exists()) {
+        props.load(configsCommonFile.newDataInputStream())
+    } else {
+        throw new GradleException("Configs file not exists");
+    }
+} catch (Exception ignored) {
+    throw new GradleException("Can't load configs file");
+}
+
+ext.sdkVersionName = "0.11.5"
+ext.minifyEnableMode = true
+ext.groupName = "vc908.stickers"
+
+ext.artifactoryUrl = props.getProperty("ARTIFACTORY_URL")
+ext.artifactoryUsername = props.getProperty("ARTIFACTORY_USERNAME")
+ext.artifactoryPass = props.getProperty("ARTIFACTORY_PASS")
+ext.apiKeyProd = props.getProperty("STICKERPIPE_API_KEY_PRODUCTION")
+ext.apiKeyDebug = props.getProperty("STICKERPIPE_API_KEY_DEBUG")
+ext.purchaseLicenceKey = props.getProperty("PURCHASE_LICENCE_KEY")
+ext.gcmSenderId = props.getProperty("GCM_SENDER_ID")
+ext.signConfigStorePass = props.getProperty("SIGN_CONFIG_STORE_PASS")
+ext.signConfigKeyAlias = props.getProperty("SIGN_CONFIG_KEY_ALIAS")
+ext.signConfigKeyPass = props.getProperty("SIGN_CONFIG_KEY_PASS")

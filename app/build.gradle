@@ -1,0 +1,42 @@
+apply plugin: 'com.android.application'
+
+version = 61
+android {
+    compileSdkVersion 23
+    buildToolsVersion '23.0.3'
+
+    defaultConfig {
+        applicationId "vc908.stickersample"
+        minSdkVersion 14
+        targetSdkVersion 23
+        versionCode version
+        versionName version as String
+        buildConfigField("String", "API_KEY_PROD", "\"${rootProject.apiKeyProd}\"")
+        buildConfigField("String", "API_KEY_DEBUG", "\"${rootProject.apiKeyDebug}\"")
+        buildConfigField("String", "PURCHASE_LICENCE_KEY", "\"${rootProject.purchaseLicenceKey}\"")
+        buildConfigField("String", "GCM_SENDER_ID", "\"${rootProject.gcmSenderId}\"")
+    }
+    signingConfigs {
+        release {
+            storeFile file("keystore.jks")
+            storePassword "${rootProject.signConfigStorePass}"
+            keyAlias "${rootProject.signConfigKeyAlias}"
+            keyPassword "${rootProject.signConfigKeyPass}"
+        }
+    }
+    buildTypes {
+        release {
+            minifyEnabled rootProject.minifyEnableMode
+            signingConfig signingConfigs.release
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+
+}
+
+dependencies {
+    compile "com.android.support:appcompat-v7:23.1.1"
+    compile 'com.android.support:recyclerview-v7:23.1.1'
+    compile project(':gcmintegration')
+    compile project(':stickerfactory')
+}

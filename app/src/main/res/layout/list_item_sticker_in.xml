@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="left"
+                android:orientation="vertical"
+                android:paddingLeft="@dimen/material_8"
+                android:paddingRight="@dimen/material_40">
+
+    <ImageView
+        android:id="@+id/avatar"
+        android:layout_width="@dimen/avatar_size"
+        android:layout_height="@dimen/avatar_size"
+        android:src="@drawable/pic_sample_avatar"/>
+
+    <ImageView
+        android:id="@+id/chat_item_sticker"
+        android:layout_width="@dimen/sp_sticker_item_size"
+        android:layout_height="@dimen/sp_sticker_item_size"
+        android:layout_alignParentTop="true"
+        android:layout_marginLeft="@dimen/material_48"
+        android:scaleType="fitStart"/>
+
+    <TextView
+        android:id="@+id/chat_item_time"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/chat_item_sticker"
+        android:layout_marginBottom="@dimen/material_8"
+        android:layout_marginLeft="@dimen/material_48"
+        android:gravity="left"
+        android:text="Today, 9.18"
+        android:textColor="@color/chat_item_text"
+        android:textSize="@dimen/text_12"/>
+
+</RelativeLayout>
