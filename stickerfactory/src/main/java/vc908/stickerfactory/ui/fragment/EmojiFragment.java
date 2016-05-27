@@ -234,7 +234,7 @@ public class EmojiFragment extends Fragment {
                 iv.setOnClickListener(v -> {
                     if (mStickerSelectedListeners.size() > 0) {
                         for (OnStickerSelectedListener listener : mStickerSelectedListeners) {
-                            listener.onStickerSelected(code);
+                            listener.onEmojiSelected(code);
                         }
                     }
                 });
