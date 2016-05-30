@@ -21,7 +21,6 @@
     <color name="sp_list_item_normal">@android:color/white</color>
     <color name="sp_shop_item_text">@android:color/black</color>
     <color name="sp_red_500">#F44336</color>
-    <color name="sp_notification_icon_background">@color/sp_primary</color>
 
     <color name="sp_dark_grey">#444</color>
     <color name="sp_error_message">@color/sp_dark_grey</color>
@@ -34,8 +33,6 @@
     <color name="sp_button_badge_inner">@color/sp_red_500</color>
     <color name="sp_button_badge_outer">@android:color/white</color>
 
-    <color name="sp_pack_info_message_text">@color/sp_primary</color>
-    <color name="sp_pack_info_message_image_filter">@color/sp_primary</color>
     <color name="sp_pack_info_bg">#eceff1</color>
 
     <color name="sp_subscription_text">#9E9E9E</color>

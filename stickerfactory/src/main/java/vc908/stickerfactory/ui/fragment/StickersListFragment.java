@@ -37,6 +37,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import vc908.stickerfactory.R;
+import vc908.stickerfactory.StickersManager;
 import vc908.stickerfactory.StorageManager;
 import vc908.stickerfactory.TasksManager;
 import vc908.stickerfactory.model.StickersPack;
@@ -231,7 +232,7 @@ public class StickersListFragment extends Fragment implements LoaderManager.Load
     }
 
     protected boolean isStickerPreviewEnabled() {
-        return true;
+        return StickersManager.isStickerPreviewEnabled;
     }
 
     protected StickersAdapter createStickersAdapter(Cursor cursor) {
