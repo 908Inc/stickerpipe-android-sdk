@@ -55,6 +55,7 @@ import vc908.stickerfactory.provider.pendingtasks.PendingTasksCursor;
 import vc908.stickerfactory.provider.pendingtasks.PendingTasksSelection;
 import vc908.stickerfactory.provider.recentlystickers.RecentlyStickersColumns;
 import vc908.stickerfactory.provider.recentlystickers.RecentlyStickersContentValues;
+import vc908.stickerfactory.provider.recentlystickers.RecentlyStickersCursor;
 import vc908.stickerfactory.provider.recentlystickers.RecentlyStickersSelection;
 import vc908.stickerfactory.provider.stickers.StickersColumns;
 import vc908.stickerfactory.provider.stickers.StickersContentValues;
@@ -615,6 +616,30 @@ public class StorageManager extends PreferenceHelper {
     }
 
     /**
+     * Clear stored stickers from cache
+     */
+    public void clearCache() {
+        new Thread(() -> {
+            // remove stickers
+            StickersSelection stickersSelection = new StickersSelection();
+            StickersCursor stickersCursor = stickersSelection.query(mContext.getContentResolver());
+            while (stickersCursor.moveToNext()) {
+                removeFile(stickersCursor.getContentId());
+            }
+            stickersSelection.delete(mContext.getContentResolver());
+            stickersCursor.close();
+            // remove recent stickers
+            RecentlyStickersSelection recentlyStickersSelection = new RecentlyStickersSelection();
+            RecentlyStickersCursor recentlyStickersCursor = recentlyStickersSelection.query(mContext.getContentResolver());
+            while (recentlyStickersCursor.moveToNext()) {
+                removeFile(recentlyStickersCursor.getContentId());
+            }
+            recentlyStickersSelection.delete(mContext.getContentResolver());
+            recentlyStickersCursor.close();
+        }).start();
+    }
+
+    /**
      * Helper class for holding information about image for caching
      */
     private static class ImageForCaching {
@@ -935,6 +960,15 @@ public class StorageManager extends PreferenceHelper {
         FileOutputStream fOut = mContext.openFileOutput(name, Context.MODE_PRIVATE);
         fOut.write(bytes);
         fOut.close();
+    }
+
+    /**
+     * Remove file from internal storage
+     *
+     * @param filename File to remove
+     */
+    public void removeFile(String filename) {
+        mContext.deleteFile(filename);
     }
 
     /**

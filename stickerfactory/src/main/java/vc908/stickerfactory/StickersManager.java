@@ -390,4 +390,11 @@ public class StickersManager {
     public static void openShop(@NonNull Context context) {
         context.startActivity(new Intent(context, StickersManager.shopClass));
     }
+
+    /**
+     * Clear all stored stickers
+     */
+    public static void clearCache(){
+        StorageManager.getInstance().clearCache();
+    }
 }
