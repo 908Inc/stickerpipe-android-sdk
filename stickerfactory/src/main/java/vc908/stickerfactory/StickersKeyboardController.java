@@ -7,6 +7,7 @@ import android.graphics.PorterDuffColorFilter;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Handler;
+import android.support.annotation.DrawableRes;
 import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
@@ -65,6 +66,8 @@ public class StickersKeyboardController {
     private int actionBarHeight;
     private boolean isStickersFrameVisible;
     private String currentSuggestSegment = "";
+    private @DrawableRes int stickersIcon = R.drawable.sp_ic_stickers;
+    private @DrawableRes int keyboardIcon = R.drawable.sp_ic_keyboard;
 
     public interface KeyboardVisibilityChangeListener {
         void onTextKeyboardVisibilityChanged(boolean isVisible);
@@ -211,9 +214,9 @@ public class StickersKeyboardController {
             } else {
                 if (stickersButton != null && stickersButton.get() != null) {
                     if (isStickersFrameVisible) {
-                        stickersButton.get().setImageResource(R.drawable.sp_ic_keyboard);
+                        stickersButton.get().setImageResource(keyboardIcon);
                     } else {
-                        stickersButton.get().setImageResource(R.drawable.sp_ic_stickers);
+                        stickersButton.get().setImageResource(stickersIcon);
                     }
                 }
             }
@@ -228,9 +231,9 @@ public class StickersKeyboardController {
         if (stickersButton != null && stickersButton.get() != null
                 && stickersFrame != null && stickersFrame.get() != null) {
             if (isVisible) {
-                stickersButton.get().setImageResource(R.drawable.sp_ic_keyboard);
+                stickersButton.get().setImageResource(keyboardIcon);
             } else {
-                stickersButton.get().setImageResource(R.drawable.sp_ic_stickers);
+                stickersButton.get().setImageResource(stickersIcon);
             }
             stickersFrame.get().setVisibility(isVisible ? View.VISIBLE : View.GONE);
             isStickersFrameVisible = isVisible;
@@ -329,6 +332,15 @@ public class StickersKeyboardController {
                 setSuggestsVisible(false);
             }
         }
+    }
+
+
+    private void setKeyboardIcon(@DrawableRes int keyboardIcon) {
+        this.keyboardIcon = keyboardIcon;
+    }
+
+    private void setStickersIcon(@DrawableRes int stickersIcon) {
+        this.stickersIcon = stickersIcon;
     }
 
     private SuggestedStickersAdapter adapter;
@@ -553,6 +565,8 @@ public class StickersKeyboardController {
         private BadgedStickersButton stickersButton;
         private StickersFragment stickersFragment;
         private RecyclerView suggestContainer;
+        private int stickersIcon;
+        private int keyboardIcon;
 
         public Builder(Context context) {
             this.context = context;
@@ -593,6 +607,16 @@ public class StickersKeyboardController {
             return this;
         }
 
+        public Builder setStickersIcon(@DrawableRes int stickersIcon) {
+            this.stickersIcon = stickersIcon;
+            return this;
+        }
+
+        public Builder setKeyboardIcon(@DrawableRes int keyboardIcon) {
+            this.keyboardIcon = keyboardIcon;
+            return this;
+        }
+
         public StickersKeyboardController build() {
             StickersKeyboardController controller = new StickersKeyboardController(context);
             if (contentContainer != null) {
@@ -615,6 +639,12 @@ public class StickersKeyboardController {
             }
             if (suggestContainer != null) {
                 controller.setSuggestContainer(suggestContainer);
+            }
+            if (stickersIcon > 0) {
+                controller.setStickersIcon(stickersIcon);
+            }
+            if (keyboardIcon > 0) {
+                controller.setKeyboardIcon(keyboardIcon);
             }
             return controller;
         }
