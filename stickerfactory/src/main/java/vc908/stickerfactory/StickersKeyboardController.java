@@ -193,7 +193,7 @@ public class StickersKeyboardController {
         }
         EventBus.getDefault().post(new KeyboardVisibilityChangedEvent(isVisible));
         if (contextReference != null && contextReference.get() != null
-                && stickersFragment != null && stickersFragment.get() != null) {
+                && isFragmentViewCreated()) {
             if (stickersFragment.get().isSearchActive() && isVisible) {
                 if (contentContainer != null && contentContainer.get() != null) {
                     updateStickersFrameParams(contentContainer.get().getHeight());
@@ -304,8 +304,12 @@ public class StickersKeyboardController {
         }
     }
 
+    private boolean isFragmentViewCreated() {
+        return stickersFragment != null && stickersFragment.get() != null && stickersFragment.get().getView() != null;
+    }
+
     public void processTabShowIntent() {
-        if (stickersFragment != null && stickersFragment.get() != null) {
+        if (isFragmentViewCreated()) {
             if (!isStickersFrameVisible) {
                 setStickersFrameVisible(true);
             }
@@ -371,7 +375,7 @@ public class StickersKeyboardController {
     }
 
     private SuggestStickerClickListener suggestClickListener = contentId -> {
-        if (stickersFragment != null && stickersFragment.get() != null) {
+        if (isFragmentViewCreated()) {
             currentSuggestSegment = "";
             setSuggestsVisible(false);
             stickersFragment.get().processExternalStickerClick(contentId);
