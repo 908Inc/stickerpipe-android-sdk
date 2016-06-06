@@ -2,9 +2,12 @@ package vc908.stickersample;
 
 import android.app.Application;
 
+import com.crashlytics.android.Crashlytics;
+
 import java.util.HashMap;
 import java.util.Map;
 
+import io.fabric.sdk.android.Fabric;
 import vc908.stickerfactory.StickersManager;
 import vc908.stickerfactory.User;
 import vc908.stickerfactory.billing.Prices;
@@ -21,6 +24,9 @@ public class App extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+        if (!BuildConfig.DEBUG) {
+            Fabric.with(this, new Crashlytics());
+        }
         // initialize stickerpipe sdk with api key
         StickersManager.initialize(BuildConfig.DEBUG
                         ? BuildConfig.API_KEY_DEBUG

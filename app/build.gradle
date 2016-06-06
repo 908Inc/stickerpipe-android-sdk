@@ -1,6 +1,21 @@
-apply plugin: 'com.android.application'
+buildscript {
+    repositories {
+        maven { url 'https://maven.fabric.io/public' }
+    }
 
-version = 61
+    dependencies {
+        classpath 'io.fabric.tools:gradle:1.21.6'
+    }
+}
+apply plugin: 'com.android.application'
+apply plugin: 'io.fabric'
+
+repositories {
+    maven { url 'https://maven.fabric.io/public' }
+}
+
+
+version = 62
 android {
     compileSdkVersion 23
     buildToolsVersion '23.0.3'
@@ -15,6 +30,7 @@ android {
         buildConfigField("String", "API_KEY_DEBUG", "\"${rootProject.apiKeyDebug}\"")
         buildConfigField("String", "PURCHASE_LICENCE_KEY", "\"${rootProject.purchaseLicenceKey}\"")
         buildConfigField("String", "GCM_SENDER_ID", "\"${rootProject.gcmSenderId}\"")
+        manifestPlaceholders = [fabrikApiKey:"${rootProject.fabrikApiKey}"]
     }
     signingConfigs {
         release {
@@ -39,4 +55,7 @@ dependencies {
     compile 'com.android.support:recyclerview-v7:23.1.1'
     compile project(':gcmintegration')
     compile project(':stickerfactory')
+    compile('com.crashlytics.sdk.android:crashlytics:2.5.6@aar') {
+        transitive = true;
+    }
 }

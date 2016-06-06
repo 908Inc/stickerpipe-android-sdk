@@ -58,6 +58,9 @@
             android:name="vc908.stickerfactory.notification_icon"
             android:resource="@drawable/pic_sample_avatar"/>
 
+        <meta-data
+            android:name="io.fabric.ApiKey"
+            android:value="${fabrikApiKey}" />
     </application>
 
 </manifest>
