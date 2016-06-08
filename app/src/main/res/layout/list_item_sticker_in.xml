@@ -4,8 +4,10 @@
                 android:layout_height="wrap_content"
                 android:gravity="left"
                 android:orientation="vertical"
+                android:paddingBottom="@dimen/material_8"
                 android:paddingLeft="@dimen/material_8"
-                android:paddingRight="@dimen/material_40">
+                android:paddingRight="@dimen/material_40"
+                android:paddingTop="@dimen/material_8">
 
     <ImageView
         android:id="@+id/avatar"
