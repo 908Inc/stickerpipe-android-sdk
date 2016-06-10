@@ -57,9 +57,9 @@ public class AnalyticsManager implements IAnalytics {
     }
 
     @Override
-    public void onStickerSelected(String contentId) {
+    public void onStickerSelected(String contentId, Action source) {
         for (IAnalytics analytics : analyticsList) {
-            analytics.onStickerSelected(contentId);
+            analytics.onStickerSelected(contentId, source);
         }
     }
 

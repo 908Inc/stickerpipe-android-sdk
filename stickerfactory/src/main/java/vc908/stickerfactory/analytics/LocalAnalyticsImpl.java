@@ -19,16 +19,17 @@ public class LocalAnalyticsImpl implements IAnalytics {
     }
 
     @Override
-    public void onStickerSelected(String contentId) {
+    public void onStickerSelected(String contentId, Action source) {
         if (!isDryRun) {
-            StorageManager.getInstance().addAnalyticsItem(Category.STICKER, Action.USE.getValue(), contentId);
+            StorageManager.getInstance().addAnalyticsItem(Category.STICKER, source.getValue(), contentId);
         }
     }
 
     @Override
     public void onEmojiSelected(String code) {
-        Logger.i(TAG, "Emoji use Event: " + code);
-        StorageManager.getInstance().addAnalyticsItem(Category.EMOJI, Action.USE.getValue(), code);
+        if (!isDryRun) {
+            StorageManager.getInstance().addAnalyticsItem(Category.EMOJI, Action.SOURCE_TAB.getValue(), code);
+        }
     }
 
     @Override
@@ -41,12 +42,16 @@ public class LocalAnalyticsImpl implements IAnalytics {
 
     @Override
     public void onError(String tag, String message) {
-        TasksManager.getInstance().addSendDevReportTask(TasksManager.TASK_CATEGORY_SEND_ERROR, tag, message);
+        if (!isDryRun) {
+            TasksManager.getInstance().addSendDevReportTask(TasksManager.TASK_CATEGORY_SEND_ERROR, tag, message);
+        }
     }
 
     @Override
     public void onWarning(String tag, String message) {
-        TasksManager.getInstance().addSendDevReportTask(TasksManager.TASK_CATEGORY_SEND_WARNING, tag, message);
+        if (!isDryRun) {
+            TasksManager.getInstance().addSendDevReportTask(TasksManager.TASK_CATEGORY_SEND_WARNING, tag, message);
+        }
     }
 
     @Override

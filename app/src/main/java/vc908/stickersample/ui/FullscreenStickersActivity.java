@@ -25,7 +25,7 @@ public class FullscreenStickersActivity extends AppCompatActivity {
             stickersFragment = new StickersFragment();
             getSupportFragmentManager().beginTransaction().replace(R.id.stickers_frame, stickersFragment).commit();
         }
-        stickersFragment.setFulllSizeEmptyImage(R.drawable.il_intro);
+        stickersFragment.setFullSizeEmptyImage(R.drawable.il_intro);
         stickersKeyboardController = new StickersKeyboardController.Builder(this)
                 .setStickersKeyboardLayout(container)
                 .setStickersFragment(stickersFragment)

@@ -41,6 +41,7 @@ import vc908.stickerfactory.R;
 import vc908.stickerfactory.StickersManager;
 import vc908.stickerfactory.StorageManager;
 import vc908.stickerfactory.analytics.AnalyticsManager;
+import vc908.stickerfactory.analytics.IAnalytics;
 import vc908.stickerfactory.events.PackTabImageDownloadedEvent;
 import vc908.stickerfactory.events.PacksLoadedEvent;
 import vc908.stickerfactory.provider.packs.PacksColumns;
@@ -50,6 +51,7 @@ import vc908.stickerfactory.ui.OnEmojiBackspaceClickListener;
 import vc908.stickerfactory.ui.OnShopButtonClickedListener;
 import vc908.stickerfactory.ui.OnStickerFileSelectedListener;
 import vc908.stickerfactory.ui.OnStickerSelectedListener;
+import vc908.stickerfactory.ui.SimpleStickerSelectedLister;
 import vc908.stickerfactory.ui.activity.CollectionsActivity;
 import vc908.stickerfactory.ui.view.BadgedShopIcon;
 import vc908.stickerfactory.ui.view.BadgedStickersTabIcon;
@@ -341,18 +343,34 @@ public class StickersFragment extends Fragment implements LoaderManager.LoaderCa
      *
      * @param imageResId Drawable res id
      */
-    public void setFulllSizeEmptyImage(@DrawableRes int imageResId) {
+    public void setFullSizeEmptyImage(@DrawableRes int imageResId) {
         this.fulSizeEmptyImageRes = imageResId;
     }
 
     /**
-     * Listener for emoji selection and store using for analytics
+     * Listener for stickers selecting from tab
      */
-    private OnStickerSelectedListener analyticsStickerSelectedListener = new OnStickerSelectedListener() {
+    private OnStickerSelectedListener analyticsTabStickerSelectedListener = new SimpleStickerSelectedLister() {
         @Override
         public void onStickerSelected(String code) {
-            AnalyticsManager.getInstance().onStickerSelected(NamesHelper.getContentIdFromCode(code));
+            addStickerSelectedEvent(code, IAnalytics.Action.SOURCE_TAB);
         }
+    };
+
+    /**
+     * Listener for stickers selecting from recent tab
+     */
+    private OnStickerSelectedListener analyticsRecentStickerSelectedListener = new SimpleStickerSelectedLister() {
+        @Override
+        public void onStickerSelected(String code) {
+            addStickerSelectedEvent(code, IAnalytics.Action.SOURCE_RECENT);
+        }
+    };
+
+    /**
+     * Listener for emoji selecting
+     */
+    private OnStickerSelectedListener analyticsEmojiSelectedListener = new SimpleStickerSelectedLister() {
 
         @Override
         public void onEmojiSelected(String emoji) {
@@ -361,18 +379,32 @@ public class StickersFragment extends Fragment implements LoaderManager.LoaderCa
     };
 
     /**
-     * x
+     * Listener for stickers selecting from search
+     */
+    private OnStickerSelectedListener analyticsSearchStickersSelectedListener = new SimpleStickerSelectedLister() {
+        @Override
+        public void onStickerSelected(String code) {
+            addStickerSelectedEvent(code, IAnalytics.Action.SOURCE_SEARCH);
+        }
+    };
+
+    /**
+     * Add stickers selected event to statistic
+     *
+     * @param code   Sticker code
+     * @param source Sticker selected source
+     */
+    private void addStickerSelectedEvent(String code, IAnalytics.Action source) {
+        AnalyticsManager.getInstance().onStickerSelected(NamesHelper.getContentIdFromCode(code), source);
+    }
+
+    /**
      * Listener for stickers selection and updating last using time
      */
-    private OnStickerSelectedListener recentStickersTrackingListener = new OnStickerSelectedListener() {
+    private OnStickerSelectedListener recentStickersTrackingListener = new SimpleStickerSelectedLister() {
         @Override
         public void onStickerSelected(String code) {
             StorageManager.getInstance().updateStickerUsingTime(NamesHelper.getContentIdFromCode(code));
-        }
-
-        @Override
-        public void onEmojiSelected(String emoji) {
-
         }
     };
 
@@ -438,7 +470,7 @@ public class StickersFragment extends Fragment implements LoaderManager.LoaderCa
                 searchStickersfragment.setStickerFileSelectedListener(onStickerFileSelectedListener);
             }
             searchStickersfragment.addStickerSelectedListener(recentStickersTrackingListener);
-            searchStickersfragment.addStickerSelectedListener(analyticsStickerSelectedListener);
+            searchStickersfragment.addStickerSelectedListener(analyticsSearchStickersSelectedListener);
             return searchStickersfragment;
         }
 
@@ -447,7 +479,7 @@ public class StickersFragment extends Fragment implements LoaderManager.LoaderCa
             if (stickerSelectedListener != null) {
                 emojiFragment.addStickerSelectedListener(stickerSelectedListener);
             }
-            emojiFragment.addStickerSelectedListener(analyticsStickerSelectedListener);
+            emojiFragment.addStickerSelectedListener(analyticsEmojiSelectedListener);
             emojiFragment.setOnBackspaceClickListener(emojiBackspaceClickListener);
             return emojiFragment;
         }
@@ -463,7 +495,7 @@ public class StickersFragment extends Fragment implements LoaderManager.LoaderCa
             if (fulSizeEmptyImageRes > 0) {
                 recentStickersfragment.setFullSizeImageRes(fulSizeEmptyImageRes);
             }
-            recentStickersfragment.addStickerSelectedListener(analyticsStickerSelectedListener);
+            recentStickersfragment.addStickerSelectedListener(analyticsRecentStickerSelectedListener);
             return recentStickersfragment;
         }
 
@@ -479,7 +511,7 @@ public class StickersFragment extends Fragment implements LoaderManager.LoaderCa
                 stickersListFragment.setStickerFileSelectedListener(onStickerFileSelectedListener);
             }
             stickersListFragment.addStickerSelectedListener(recentStickersTrackingListener);
-            stickersListFragment.addStickerSelectedListener(analyticsStickerSelectedListener);
+            stickersListFragment.addStickerSelectedListener(analyticsTabStickerSelectedListener);
             return stickersListFragment;
         }
 
@@ -591,11 +623,11 @@ public class StickersFragment extends Fragment implements LoaderManager.LoaderCa
         }
     }
 
-    public void processExternalStickerClick(String contentId) {
+    public void processSuggestStickerClick(String contentId) {
         if (stickerSelectedListener != null) {
             stickerSelectedListener.onStickerSelected(NamesHelper.getStickerCode(contentId));
         }
         recentStickersTrackingListener.onStickerSelected(contentId);
-        analyticsStickerSelectedListener.onStickerSelected(contentId);
+        AnalyticsManager.getInstance().onStickerSelected(contentId, IAnalytics.Action.SOURCE_SUGGEST);
     }
 }

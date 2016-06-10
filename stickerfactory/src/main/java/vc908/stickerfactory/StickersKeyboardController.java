@@ -378,7 +378,7 @@ public class StickersKeyboardController {
         if (isFragmentViewCreated()) {
             currentSuggestSegment = "";
             setSuggestsVisible(false);
-            stickersFragment.get().processExternalStickerClick(contentId);
+            stickersFragment.get().processSuggestStickerClick(contentId);
         }
     };
 

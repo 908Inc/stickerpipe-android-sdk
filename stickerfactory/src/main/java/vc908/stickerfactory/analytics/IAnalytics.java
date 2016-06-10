@@ -34,7 +34,10 @@ public interface IAnalytics {
     }
 
     enum Action {
-        USE("use"),
+        SOURCE_TAB("use"),
+        SOURCE_SUGGEST("suggest"),
+        SOURCE_SEARCH("search"),
+        SOURCE_RECENT("recent"),
         INSTALL("install"),
         REMOVE("remove"),
         CHECK("check"),
@@ -68,8 +71,9 @@ public interface IAnalytics {
      * Call when user select a sticker
      *
      * @param contentId Content ID
+     * @param source    Source of selected sticker
      */
-    void onStickerSelected(String contentId);
+    void onStickerSelected(String contentId, Action source);
 
     /**
      * Call when user select emoji
