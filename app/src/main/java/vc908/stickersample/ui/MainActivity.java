@@ -107,7 +107,6 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
-
         addMockData();
         processIntent(getIntent());
     }

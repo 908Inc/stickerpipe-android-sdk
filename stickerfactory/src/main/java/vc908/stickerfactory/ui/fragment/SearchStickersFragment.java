@@ -19,6 +19,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import java.io.File;
+import java.lang.ref.WeakReference;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -48,7 +49,8 @@ public class SearchStickersFragment extends StickersListFragment {
     private TextView searchEdit;
     private ProgressBar searchProgress;
     private ImageView clearButton;
-    private ImageView backButton;
+    private WeakReference<ImageView> backButtonReference;
+    private View.OnClickListener searchExternalClickListener;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -66,14 +68,25 @@ public class SearchStickersFragment extends StickersListFragment {
         View layout = super.onCreateView(inflater, container, savedInstanceState);
         searchEdit = (TextView) layout.findViewById(R.id.sp_search_edit);
         searchEdit.setImeOptions(EditorInfo.IME_FLAG_NO_EXTRACT_UI);
+        searchEdit.setOnClickListener(v -> {
+            if (searchExternalClickListener != null) {
+                searchExternalClickListener.onClick(searchEdit);
+            }
+        });
+        searchEdit.setOnFocusChangeListener((v, hasFocus) -> {
+            if (searchExternalClickListener != null && hasFocus) {
+                searchExternalClickListener.onClick(searchEdit);
+            }
+        });
         searchProgress = (ProgressBar) layout.findViewById(R.id.sp_search_progress);
         Utils.setColorFilter(getContext(), searchProgress.getIndeterminateDrawable(), R.color.sp_search_fragment_icons);
         clearButton = (ImageView) layout.findViewById(R.id.sp_search_clear);
         clearButton.setOnClickListener(v -> searchEdit.setText(""));
         Utils.setColorFilter(getContext(), clearButton, R.color.sp_search_fragment_icons);
-        backButton = (ImageView) layout.findViewById(R.id.sp_search_back);
+        ImageView backButton = (ImageView) layout.findViewById(R.id.sp_search_back);
         backButton.setOnClickListener(v -> KeyboardUtils.hideKeyboard(getContext(), v));
         Utils.setColorFilter(getContext(), backButton, R.color.sp_search_fragment_icons);
+        backButtonReference = new WeakReference<>(backButton);
         searchEdit.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -97,6 +110,10 @@ public class SearchStickersFragment extends StickersListFragment {
         return layout;
     }
 
+    public void setExternalSearchEditClickListener(View.OnClickListener searchExternalClickListener) {
+        this.searchExternalClickListener = searchExternalClickListener;
+    }
+
     @Override
     public void onStart() {
         super.onStart();
@@ -110,9 +127,11 @@ public class SearchStickersFragment extends StickersListFragment {
     }
 
     public void onEvent(KeyboardVisibilityChangedEvent event) {
-        backButton.setVisibility(event.isVisible() ? View.VISIBLE : View.GONE);
-        if (!event.isVisible()) {
-            getActivity().getWindow().getDecorView().clearFocus();
+        if (backButtonReference != null && backButtonReference.get() != null) {
+            backButtonReference.get().setVisibility(event.isVisible() ? View.VISIBLE : View.GONE);
+            if (!event.isVisible()) {
+                getActivity().getWindow().getDecorView().clearFocus();
+            }
         }
     }
 

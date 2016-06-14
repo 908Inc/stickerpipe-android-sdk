@@ -329,7 +329,7 @@ public class StickersListFragment extends Fragment implements LoaderManager.Load
                             }
                         });
             } else {
-                viewHolder.iv.setImageResource(android.R.color.transparent);
+                viewHolder.iv.setImageDrawable(null);
             }
         }
 

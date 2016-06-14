@@ -417,6 +417,18 @@ public class StickersFragment extends Fragment implements LoaderManager.LoaderCa
         tabsContainer.setVisibility(isVisible ? View.VISIBLE : View.GONE);
     }
 
+    private View.OnClickListener externalSearchEditClickListener;
+
+    public void setExternalSearchEditClickListener(View.OnClickListener externalSearchEditClickListener) {
+        this.externalSearchEditClickListener = externalSearchEditClickListener;
+    }
+
+    private View.OnClickListener searchEditClickListener = v -> {
+        if (externalSearchEditClickListener != null) {
+            externalSearchEditClickListener.onClick(v);
+        }
+    };
+
     /**
      * Stickers pager adapter.
      * Handle stickers fragment and sp_tab images
@@ -471,6 +483,7 @@ public class StickersFragment extends Fragment implements LoaderManager.LoaderCa
             }
             searchStickersfragment.addStickerSelectedListener(recentStickersTrackingListener);
             searchStickersfragment.addStickerSelectedListener(analyticsSearchStickersSelectedListener);
+            searchStickersfragment.setExternalSearchEditClickListener(searchEditClickListener);
             return searchStickersfragment;
         }
 

@@ -123,6 +123,7 @@
 -keep public class vc908.stickerfactory.StickersKeyboardController{*;}
 -keep public class vc908.stickerfactory.StickersKeyboardController$Builder { *; }
 -keep public interface vc908.stickerfactory.StickersKeyboardController$KeyboardVisibilityChangeListener{*;}
+-keep public interface vc908.stickerfactory.StickersKeyboardController$KeyboardVisibilityChangeIntentListener{*;}
 
 -keep public class vc908.stickerfactory.StickerLoader{*;}
 -keep public class vc908.stickerfactory.ManagerFacade{*;}

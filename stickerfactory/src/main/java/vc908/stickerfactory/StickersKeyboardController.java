@@ -63,16 +63,25 @@ public class StickersKeyboardController {
     private WeakReference<RecyclerView> suggestContainer;
     private StickersKeyboardLayout.KeyboardHideCallback keyboardHideCallback;
     private KeyboardVisibilityChangeListener externalKeyboardVisibilityChangeListener;
+    private KeyboardVisibilityChangeIntentListener keyboardVisibilityChangeIntentListener;
     private int actionBarHeight;
     private boolean isStickersFrameVisible;
     private String currentSuggestSegment = "";
-    private @DrawableRes int stickersIcon = R.drawable.sp_ic_stickers;
-    private @DrawableRes int keyboardIcon = R.drawable.sp_ic_keyboard;
+    private
+    @DrawableRes
+    int stickersIcon = R.drawable.sp_ic_stickers;
+    private
+    @DrawableRes
+    int keyboardIcon = R.drawable.sp_ic_keyboard;
 
     public interface KeyboardVisibilityChangeListener {
         void onTextKeyboardVisibilityChanged(boolean isVisible);
 
         void onStickersKeyboardVisibilityChanged(boolean isVisible);
+    }
+
+    public interface KeyboardVisibilityChangeIntentListener {
+        void onKeyboardVisibilityChangeIntent();
     }
 
     private StickersKeyboardController(Context contextReference) {
@@ -126,6 +135,9 @@ public class StickersKeyboardController {
         this.stickersButton = new WeakReference<>(stickersButton);
         if (contextReference != null && contextReference.get() != null) {
             stickersButton.setOnClickListener(v -> {
+                        if (keyboardVisibilityChangeIntentListener != null) {
+                            keyboardVisibilityChangeIntentListener.onKeyboardVisibilityChangeIntent();
+                        }
                         if (isStickersFrameVisible) {
                             showKeyboard();
                         } else {
@@ -152,9 +164,15 @@ public class StickersKeyboardController {
                         chatEdit.get().dispatchKeyEvent(event);
                     }
                 }
-
         );
+        stickersFragment.setExternalSearchEditClickListener(searchEditClickListener);
     }
+
+    private View.OnClickListener searchEditClickListener = v -> {
+        if (keyboardVisibilityChangeIntentListener != null) {
+            keyboardVisibilityChangeIntentListener.onKeyboardVisibilityChangeIntent();
+        }
+    };
 
     private void hideKeyboard(@NonNull Context context, @NonNull StickersKeyboardLayout.KeyboardHideCallback callback) {
         if (stickersKeyboardLayout != null && stickersKeyboardLayout.get() != null) {
@@ -321,6 +339,10 @@ public class StickersKeyboardController {
 
     public void setKeyboardVisibilityChangeListener(@NonNull KeyboardVisibilityChangeListener listener) {
         this.externalKeyboardVisibilityChangeListener = listener;
+    }
+
+    public void setKeyboardVisibilityChangeIntentListener(@NonNull KeyboardVisibilityChangeIntentListener keyboardVisibilityChangeIntentListener) {
+        this.keyboardVisibilityChangeIntentListener = keyboardVisibilityChangeIntentListener;
     }
 
 
