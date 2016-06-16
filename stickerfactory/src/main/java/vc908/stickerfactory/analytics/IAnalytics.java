@@ -34,7 +34,7 @@ public interface IAnalytics {
     }
 
     enum Action {
-        SOURCE_TAB("use"),
+        SOURCE_TAB("tab"),
         SOURCE_SUGGEST("suggest"),
         SOURCE_SEARCH("search"),
         SOURCE_RECENT("recent"),
