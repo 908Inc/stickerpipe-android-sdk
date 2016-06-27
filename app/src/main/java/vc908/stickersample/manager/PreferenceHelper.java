@@ -18,7 +18,7 @@ abstract class PreferenceHelper {
      *
      * @param context preference context
      */
-    protected PreferenceHelper(Context context) {
+    PreferenceHelper(Context context) {
         prefs = PreferenceManager.getDefaultSharedPreferences(context);
     }
 
@@ -29,7 +29,7 @@ abstract class PreferenceHelper {
      * @return string value by key
      */
 
-    protected String getStringValue(String key) {
+    public String getStringValue(String key) {
         return getStringValue(key, null);
     }
     /**
@@ -39,7 +39,7 @@ abstract class PreferenceHelper {
      * @param defaultValue Default string value
      * @return string value by key
      */
-    protected String getStringValue(String key, String defaultValue) {
+    private String getStringValue(String key, String defaultValue) {
         return prefs.getString(key, defaultValue);
     }
 
@@ -64,7 +64,7 @@ abstract class PreferenceHelper {
      * @return int value by key
      */
 
-    protected int getIntValue(String key, int defaultValue) {
+    int getIntValue(String key, int defaultValue) {
         String stringValue = getStringValue(key);
         if (stringValue == null) {
             return defaultValue;
@@ -98,7 +98,7 @@ abstract class PreferenceHelper {
      * @return boolean value by key
      */
 
-    protected boolean getBooleanValue(String key) {
+    boolean getBooleanValue(String key) {
         return getBooleanValue(key, false);
     }
 
@@ -110,7 +110,7 @@ abstract class PreferenceHelper {
      * @param defaultValue default value
      * @return boolean value by key or default value
      */
-    protected boolean getBooleanValue(String key, boolean defaultValue) {
+    private boolean getBooleanValue(String key, boolean defaultValue) {
         String stringValue = getStringValue(key);
         if (stringValue == null) {
             return defaultValue;
@@ -126,7 +126,7 @@ abstract class PreferenceHelper {
      * @param value value for store
      * @param <U>   value object class
      */
-    protected <U> void storeValue(String key, U value) {
+    public <U> void storeValue(String key, U value) {
         String resultValue = String.valueOf(value);
         prefs.edit().putString(key, resultValue).apply();
     }

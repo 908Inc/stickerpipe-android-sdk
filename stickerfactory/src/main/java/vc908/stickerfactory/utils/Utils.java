@@ -423,4 +423,13 @@ public class Utils {
     public static void setColorFilter(Context context, Drawable drawable, @ColorRes int colorRes) {
         drawable.setColorFilter(ContextCompat.getColor(context, colorRes), PorterDuff.Mode.SRC_IN);
     }
+
+    /**
+     * Generate random boolean
+     *
+     * @return Random boolean
+     */
+    public static boolean randomBoolean() {
+        return Math.random() < 0.5f;
+    }
 }

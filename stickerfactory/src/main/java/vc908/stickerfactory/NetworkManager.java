@@ -46,9 +46,9 @@ import vc908.stickerfactory.utils.Utils;
  */
 public final class NetworkManager {
 
-    public static final String BASE_URL_API = "https://api.stickerpipe.com";
+    private static final String BASE_URL_API = "https://api.stickerpipe.com";
 
-    public static final String API_PATH = "/api/v2/";
+    private static final String API_PATH = "/api/v2/";
     public static final String API_URL = BASE_URL_API + API_PATH;
 
     private static final String TAG = NetworkManager.class.getSimpleName();
@@ -242,7 +242,7 @@ public final class NetworkManager {
      * Send user related data to serverside
      */
     public Observable<NetworkResponseModel> requestSendUserData(@NonNull Map<String, String> data) {
-        RequestBody requestBody = RequestBody.create(MediaType.parse("application/json"), data.toString());
+        RequestBody requestBody = RequestBody.create(MediaType.parse("application/json"), gson.toJson(data));
         return mNetworkService.sendUserData(requestBody)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread());

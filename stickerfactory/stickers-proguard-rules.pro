@@ -128,6 +128,8 @@
 -keep public class vc908.stickerfactory.StickerLoader{*;}
 -keep public class vc908.stickerfactory.ManagerFacade{*;}
 
+-keep public class vc908.stickerfactory.SplitManager{*;}
+
 -keep public class vc908.stickerfactory.emoji.Emoji{*;}
 -keep public class vc908.stickerfactory.utils.Utils{*;}
 -keep public class vc908.stickerfactory.utils.CompatUtils{*;}
