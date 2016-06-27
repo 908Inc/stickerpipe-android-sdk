@@ -86,6 +86,7 @@ public class StorageManager extends PreferenceHelper {
     private static final String PREF_KEY_USER_SHOP_CONTENT_VISIT_LAST_MODIFIED = "pref_key_user_shop_content_visit_last_modified";
     private static final String PREF_KEY_PACK_TO_SHOW_NAME = "pref_key_pack_to_show";
     private static final String PREF_KEY_MARKED_PACK_PREFIX = "pref_key_marked_pack_prefix_";
+    private static final String PREF_KEY_USER_SPLIT_GROUP = "pref_key_user_split_group";
 
     private final AsyncQueryHandler asyncQueryHandler;
 
@@ -438,7 +439,7 @@ public class StorageManager extends PreferenceHelper {
      * @param clientApiKey Client API key
      * @param data         User relate meta data
      */
-    public void storeUser(@Nullable String userId, @NonNull String clientApiKey, @Nullable Map<String, String> data) {
+    void storeUser(@Nullable String userId, @NonNull String clientApiKey, @Nullable Map<String, String> data) {
         if (!TextUtils.isEmpty(userId) && !TextUtils.isEmpty(clientApiKey)) {
             // try initialize user id
             getUserID();
@@ -450,18 +451,37 @@ public class StorageManager extends PreferenceHelper {
                 clearUserData();
                 NetworkManager.getInstance().checkPackUpdates();
             }
-            // check meta data
-            if (data != null && !data.isEmpty()) {
-                Map<String, String> storedData = StorageManager.getInstance().getUserData();
-                if (!data.equals(storedData) || isNewUser) {
-                    StorageManager.getInstance().storeUserdata(data);
-                    TasksManager.getInstance().addSendUserDataTask();
-                }
+            data = addSplitData(data);
+            // check for new user related data
+            Map<String, String> storedData = getUserData();
+            if (isNewUser || !data.equals(storedData)) {
+                storeUserdata(data);
+                TasksManager.getInstance().addSendUserDataTask();
             }
         } else if (userId == null) {
             removeValue(PREF_KEY_USER_ID);
             clearUserData();
         }
+    }
+
+    /**
+     * Add split specific data to input user related data
+     *
+     * @param data Input user related data
+     * @return User data with split information
+     */
+    private Map<String, String> addSplitData(Map<String, String> data) {
+        if (data == null) {
+            data = new HashMap<>();
+        }
+        String storedSplitGroup = getUserSplitGroup();
+        if (TextUtils.isEmpty(storedSplitGroup)) {
+            storedSplitGroup = Utils.randomBoolean() ? SplitManager.SPLIT_GROUP_A : SplitManager.SPLIT_GROUP_B;
+            storeUserSplitGroup(storedSplitGroup);
+        }
+        data.put(SplitManager.SPLIT_GROUP_STICKERS_LAYOUT, storedSplitGroup);
+        data.put(SplitManager.SPLIT_STATUS_STICKERS_LAYOUT, SplitManager.SPLIT_STATUS_OFF);
+        return data;
     }
 
     // Remove all user related data
@@ -578,8 +598,7 @@ public class StorageManager extends PreferenceHelper {
      * @return Result of check
      */
     public boolean isShopHasNewContent() {
-        return StorageManager.getInstance().getShopContentLastModified()
-                > StorageManager.getInstance().getUserShopContentVisitLastModifiedDate();
+        return getShopContentLastModified() > getUserShopContentVisitLastModifiedDate();
     }
 
     /**
@@ -1264,8 +1283,32 @@ public class StorageManager extends PreferenceHelper {
         }
     }
 
+    /**
+     * Return marked statuf for given pack
+     *
+     * @param packName Pack name
+     * @return Is pack marked
+     */
     public boolean getIsPackMarked(String packName) {
         return getBooleanValue(PREF_KEY_MARKED_PACK_PREFIX + packName);
+    }
+
+    /**
+     * Get current user split group
+     *
+     * @return Split group name
+     */
+    public String getUserSplitGroup() {
+        return getStringValue(PREF_KEY_USER_SPLIT_GROUP);
+    }
+
+    /**
+     * Strore split group for current user
+     *
+     * @param group Split group name
+     */
+    public void storeUserSplitGroup(String group) {
+        storeValue(PREF_KEY_USER_SPLIT_GROUP, group);
     }
 
     /**
