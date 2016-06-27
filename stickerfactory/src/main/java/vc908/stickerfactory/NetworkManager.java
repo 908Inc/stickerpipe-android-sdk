@@ -12,6 +12,7 @@ import org.json.JSONArray;
 import java.io.File;
 import java.io.IOException;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 import de.greenrobot.event.EventBus;
 import okhttp3.Cache;
@@ -78,7 +79,9 @@ public final class NetworkManager {
                 Utils.getDensityName(context),
                 BuildConfig.VERSION_NAME);
         mOkHttpClientBuilder.networkInterceptors().add(headersInterceptor);
-
+        mOkHttpClientBuilder.connectTimeout(60, TimeUnit.SECONDS);
+        mOkHttpClientBuilder.readTimeout(60, TimeUnit.SECONDS);
+        mOkHttpClientBuilder.writeTimeout(60, TimeUnit.SECONDS);
 //        HttpLoggingInterceptor httpLoginInterceptors = new HttpLoggingInterceptor();
 //        httpLoginInterceptors.setLevel(HttpLoggingInterceptor.Level.BODY);
 //        mOkHttpClientBuilder.networkInterceptors().add(httpLoginInterceptors);

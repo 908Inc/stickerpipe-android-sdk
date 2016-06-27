@@ -296,6 +296,10 @@ public class StickersListFragment extends Fragment implements LoaderManager.Load
         @Override
         public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             ImageView iv = new SquareImageView(mAdapterFragment.getContext());
+//            ImageView iv = new ImageView(mAdapterFragment.getContext());
+//            int size = (int) mAdapterFragment.getContext().getResources().getDimension(R.dimen.sp_list_sticker_width);
+//            GridLayoutManager.LayoutParams lp = new GridLayoutManager.LayoutParams(size, size);
+//            iv.setLayoutParams(lp);
             iv.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
             iv.setPadding(padding, padding, padding, padding);
             return new ViewHolder(iv);
