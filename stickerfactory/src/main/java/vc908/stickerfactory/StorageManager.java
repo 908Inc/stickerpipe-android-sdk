@@ -480,7 +480,7 @@ public class StorageManager extends PreferenceHelper {
             storeUserSplitGroup(storedSplitGroup);
         }
         data.put(SplitManager.SPLIT_GROUP_STICKERS_LAYOUT, storedSplitGroup);
-        data.put(SplitManager.SPLIT_STATUS_STICKERS_LAYOUT, SplitManager.SPLIT_STATUS_OFF);
+        data.put(SplitManager.SPLIT_STATUS_STICKERS_LAYOUT, SplitManager.SPLIT_STATUS_ON);
         return data;
     }
 

@@ -37,6 +37,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import vc908.stickerfactory.R;
+import vc908.stickerfactory.SplitManager;
 import vc908.stickerfactory.StickersManager;
 import vc908.stickerfactory.StorageManager;
 import vc908.stickerfactory.TasksManager;
@@ -118,7 +119,10 @@ public class StickersListFragment extends Fragment implements LoaderManager.Load
             progress = layout.findViewById(R.id.progress);
             int padding = getResources().getDimensionPixelSize(R.dimen.material_8);
             // calculate stickers columns count
-            int columnsCount = (int) Math.ceil(Utils.getScreenWidthInPx(getContext()) / ((float) maxStickerWidth + padding * 2));
+            String splitGroup = StorageManager.getInstance().getUserSplitGroup();
+            int columnsCount = (int) Math.ceil(Utils.getScreenWidthInPx(getContext())
+                    / ((float) (SplitManager.SPLIT_GROUP_B.equals(splitGroup) ? maxStickerWidth / 2 : maxStickerWidth)
+                    + padding * 2));
             GridLayoutManager lm = (new GridLayoutManager(getContext(), columnsCount));
             rv.setLayoutManager(lm);
         }
@@ -262,8 +266,9 @@ public class StickersListFragment extends Fragment implements LoaderManager.Load
     }
 
 
-    protected static class StickersAdapter extends CursorRecyclerViewAdapter<StickersAdapter.ViewHolder> {
+    static class StickersAdapter extends CursorRecyclerViewAdapter<StickersAdapter.ViewHolder> {
 
+        private int halfStickerWidth;
         private Drawable placeholderDrawable;
         private MySimpleGestureListener longPressGestureListener;
         private Fragment mAdapterFragment;
@@ -285,7 +290,7 @@ public class StickersListFragment extends Fragment implements LoaderManager.Load
             longPressGestureListener = new MySimpleGestureListener(stickerPreviewDelegate);
             placeholderDrawable = ContextCompat.getDrawable(fragment.getContext(), R.drawable.sp_sticker_placeholder);
             placeholderDrawable.setColorFilter(ContextCompat.getColor(fragment.getContext(), R.color.sp_placeholder_color_filer), PorterDuff.Mode.SRC_IN);
-
+            halfStickerWidth = (int) mAdapterFragment.getResources().getDimension(R.dimen.sp_list_max_sticker_width) / 2;
         }
 
         public void setStickerPreviewEnabled(boolean isEnabled) {
@@ -295,11 +300,15 @@ public class StickersListFragment extends Fragment implements LoaderManager.Load
 
         @Override
         public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-            ImageView iv = new SquareImageView(mAdapterFragment.getContext());
-//            ImageView iv = new ImageView(mAdapterFragment.getContext());
-//            int size = (int) mAdapterFragment.getContext().getResources().getDimension(R.dimen.sp_list_sticker_width);
-//            GridLayoutManager.LayoutParams lp = new GridLayoutManager.LayoutParams(size, size);
-//            iv.setLayoutParams(lp);
+            ImageView iv;
+            String splitGroup = StorageManager.getInstance().getUserSplitGroup();
+            if (SplitManager.SPLIT_GROUP_B.equals(splitGroup)) {
+                iv = new ImageView(mAdapterFragment.getContext());
+                GridLayoutManager.LayoutParams lp = new GridLayoutManager.LayoutParams(halfStickerWidth, halfStickerWidth);
+                iv.setLayoutParams(lp);
+            } else {
+                iv = new SquareImageView(mAdapterFragment.getContext());
+            }
             iv.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
             iv.setPadding(padding, padding, padding, padding);
             return new ViewHolder(iv);
