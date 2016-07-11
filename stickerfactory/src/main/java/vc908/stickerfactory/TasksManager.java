@@ -51,6 +51,14 @@ public class TasksManager {
         addTask(task);
     }
 
+    public void addSendTokenTask(String token, String type) {
+        TasksManager.Task task = new TasksManager.Task(
+                TASK_CATEGORY_SEND_TOKEN,
+                type,
+                token);
+        addTask(task);
+    }
+
     public void addSendDevReportTask(@TaskCategory int taskCategory, String tag, String message) {
         Task task = new Task(
                 taskCategory,
@@ -72,8 +80,9 @@ public class TasksManager {
     public static final int TASK_CATEGORY_SEND_USER_DATA = 2;
     public static final int TASK_CATEGORY_SEND_ERROR = 3;
     public static final int TASK_CATEGORY_SEND_WARNING = 4;
+    public static final int TASK_CATEGORY_SEND_TOKEN = 5;
 
-    @IntDef({TASK_CATEGORY_PURCHASE_PACK, TASK_CATEGORY_HIDE_PACK, TASK_CATEGORY_SEND_USER_DATA, TASK_CATEGORY_SEND_ERROR, TASK_CATEGORY_SEND_WARNING, TASK_CATEGORY_UNKNOWN})
+    @IntDef({TASK_CATEGORY_PURCHASE_PACK, TASK_CATEGORY_HIDE_PACK, TASK_CATEGORY_SEND_USER_DATA, TASK_CATEGORY_SEND_ERROR, TASK_CATEGORY_SEND_WARNING, TASK_CATEGORY_UNKNOWN, TASK_CATEGORY_SEND_TOKEN})
     public @interface TaskCategory {
     }
 
@@ -193,6 +202,9 @@ public class TasksManager {
             case TASK_CATEGORY_SEND_WARNING:
                 executeSendReportTask(DEV_REPORT_CATEGORY_WARNING, task);
                 break;
+            case TASK_CATEGORY_SEND_TOKEN:
+                executeSendTokenTask(task);
+                break;
             case TASK_CATEGORY_UNKNOWN:
             default:
                 Logger.w(TAG, "Unknown category of task");
@@ -236,9 +248,7 @@ public class TasksManager {
             NetworkManager.getInstance().requestPackPurchase(task.getAction(), purchaseType)
                     .flatMap(response -> StorageManager.getInstance().storeOrUpdatePackWithStickers(response.getData()))
                     .subscribe(
-                            result -> {
-                                onTaskCompleted(task, true, false);
-                            },
+                            result -> onTaskCompleted(task, true, false),
                             th -> {
                                 Logger.e(TAG, "Can't complete pack storing", th);
                                 onTaskCompleted(task, false, isNeedToRetryTask(th));
@@ -248,6 +258,21 @@ public class TasksManager {
             Logger.w(TAG, "Can't parse purchase type: " + task.getValue());
             onTaskCompleted(task, false, false);
         }
+    }
+
+    private void executeSendTokenTask(Task task) {
+        NetworkManager.getInstance().requestSendToken(task.getValue(), task.getAction())
+                .subscribe(
+                        response -> {
+                            if (NetworkService.TOKEN_TYPE_GCM.equals(task.getAction())) {
+                                StorageManager.getInstance().storeIsGcmTokenSent(true);
+                            }
+                            onTaskCompleted(task, true, false);
+                        },
+                        th -> {
+                            Logger.e(TAG, "Can't complete send token task", th);
+                            onTaskCompleted(task, false, isNeedToRetryTask(th));
+                        });
     }
 
     private boolean isNeedToRetryTask(Throwable throwable) {

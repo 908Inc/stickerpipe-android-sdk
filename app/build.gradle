@@ -54,6 +54,7 @@ dependencies {
     compile "com.android.support:appcompat-v7:23.1.1"
     compile 'com.android.support:recyclerview-v7:23.1.1'
     compile project(':gcmintegration')
+    compile project(':jpushintegration')
     compile project(':stickerfactory')
     compile('com.crashlytics.sdk.android:crashlytics:2.5.6@aar') {
         transitive = true;

@@ -1,1 +1,1 @@
-include ':app', ':stickerfactory', ':gcmintegration'
+include ':app', ':stickerfactory', ':gcmintegration', ':jpushintegration'

@@ -1,5 +1,7 @@
 package vc908.stickerfactory;
 
+import android.support.annotation.StringDef;
+
 import okhttp3.RequestBody;
 import retrofit2.http.Body;
 import retrofit2.http.DELETE;
@@ -22,10 +24,15 @@ import vc908.stickerfactory.model.response.StickersResponse;
  */
 public interface NetworkService {
 
-    String PARAM_IS_SUBSCRIBER = "is_subscriber";
+    String TOKEN_TYPE_GCM = "gcm";
+    String TOKEN_TYPE_JPUSH = "jpush";
+
+    @StringDef({TOKEN_TYPE_GCM, TOKEN_TYPE_JPUSH})
+    public @interface PushTokenType {
+    }
 
     @GET("shop/my")
-    Observable<StickersResponse> getUserStickersList(@Query(PARAM_IS_SUBSCRIBER) int isSubscriber);
+    Observable<StickersResponse> getUserStickersList(@Query("is_subscriber") int isSubscriber);
 
     @DELETE("packs/{packName}")
     Observable<NetworkResponseModel> hidePack(@Path("packName") String packName);
@@ -45,7 +52,7 @@ public interface NetworkService {
 
     @FormUrlEncoded
     @POST("token")
-    Observable<Object> sendToken(@Field("token") String token);
+    Observable<NetworkResponseModel> sendToken(@Field("token") String token, @Field("type") @PushTokenType String type);
 
     @GET("search")
     Observable<SearchResponse> getSearchResults(@Query("q") String query, @Query("limit") int limit, @Query("top_if_empty") int topIfEmpty, @Query("whole_word") int wholeWord);

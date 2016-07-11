@@ -837,6 +837,7 @@ public class StorageManager extends PreferenceHelper {
                 .query(mContext.getContentResolver());
         if (cursor.moveToFirst()) {
             try {
+                // TODO remove intDef?
                 @TasksManager.TaskCategory int category = TasksManager.TASK_CATEGORY_UNKNOWN;
                 switch (Integer.valueOf(cursor.getCategory())) {
                     case TasksManager.TASK_CATEGORY_PURCHASE_PACK:
@@ -853,6 +854,9 @@ public class StorageManager extends PreferenceHelper {
                         break;
                     case TasksManager.TASK_CATEGORY_SEND_WARNING:
                         category = TasksManager.TASK_CATEGORY_SEND_WARNING;
+                        break;
+                    case TasksManager.TASK_CATEGORY_SEND_TOKEN:
+                        category = TasksManager.TASK_CATEGORY_SEND_TOKEN;
                         break;
                     default:
                 }

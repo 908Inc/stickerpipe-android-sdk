@@ -6,7 +6,7 @@ buildscript {
         }
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:2.1.2'
+        classpath 'com.android.tools.build:gradle:2.2.0-alpha4'
         classpath 'me.tatarka:gradle-retrolambda:3.1.0'
     }
 }
@@ -47,3 +47,4 @@ ext.signConfigStorePass = props.getProperty("SIGN_CONFIG_STORE_PASS")
 ext.signConfigKeyAlias = props.getProperty("SIGN_CONFIG_KEY_ALIAS")
 ext.signConfigKeyPass = props.getProperty("SIGN_CONFIG_KEY_PASS")
 ext.fabrikApiKey = props.getProperty("FABRIK_API_KEY")
+ext.spApplicationId = "vc908.stickersample"
