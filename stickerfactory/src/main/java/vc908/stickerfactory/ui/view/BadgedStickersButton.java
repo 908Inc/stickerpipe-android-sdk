@@ -61,10 +61,7 @@ public class BadgedStickersButton extends BaseBadgedStickersButton {
         if (StorageManager.recentStickersCount < 0) {
             StorageManager.getInstance().updateRecentStickersCount();
         }
-        setIsMarked(
-                notificationWatcher.isMarkedPacksExists()
-                        || StorageManager.recentStickersCount == 0
-                        || StorageManager.getInstance().isShopHasNewContent());
+        setIsMarked(notificationWatcher.isMarkedPacksExists() || StorageManager.getInstance().isShopHasNewContent());
     }
 
     private static class NotificationWatcher {
