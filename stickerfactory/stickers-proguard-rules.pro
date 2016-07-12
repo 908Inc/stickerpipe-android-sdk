@@ -120,6 +120,8 @@
 -keep public class vc908.stickerfactory.ui.view.StickersKeyboardLayout{*;}
 -keep public interface vc908.stickerfactory.SubscriptionListener{*;}
 
+-keep public interface vc908.stickerfactory.NetworkService{*;}
+
 -keep public class vc908.stickerfactory.StickersKeyboardController{*;}
 -keep public class vc908.stickerfactory.StickersKeyboardController$Builder { *; }
 -keep public interface vc908.stickerfactory.StickersKeyboardController$KeyboardVisibilityChangeListener{*;}
