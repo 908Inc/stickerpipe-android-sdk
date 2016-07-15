@@ -5,6 +5,7 @@
     <permission
         android:name=".permission.JPUSH_MESSAGE"
         android:protectionLevel="signature"/>
+
     <uses-permission android:name="vc908.stickersample.permission.JPUSH_MESSAGE"/>
 
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
@@ -40,8 +41,8 @@
 
         <receiver
             android:name="cn.jpush.android.service.PushReceiver"
-            android:exported="false"
-            android:enabled="true">
+            android:enabled="true"
+            android:exported="false">
             <intent-filter android:priority="1000">
                 <action android:name="cn.jpush.android.intent.NOTIFICATION_RECEIVED_PROXY"/>
                 <category android:name="vc908.stickersample"/>
@@ -96,9 +97,6 @@
         <meta-data
             android:name="JPUSH_CHANNEL"
             android:value="developer-default"/>
-        <meta-data
-            android:name="JPUSH_APPKEY"
-            android:value="e39b00309b3b6b4c2fe4481f"/>
 
     </application>
 
