@@ -250,7 +250,7 @@ public class StickersManager {
         StickersManager.useMaxImagesSize = useMaxImagesSize;
     }
 
-    public static void setStickerPreviewEnabled(boolean isEnabled){
+    public static void setStickerPreviewEnabled(boolean isEnabled) {
         isStickerPreviewEnabled = isEnabled;
     }
 
@@ -269,7 +269,17 @@ public class StickersManager {
      * @param token GCM token
      */
     public static void sendGcmToken(String token) {
-        NetworkManager.getInstance().sendGcmToken(token);
+        sendGcmToken(token, NetworkService.TOKEN_TYPE_GCM);
+    }
+
+    /**
+     * Create task for send token to serveside
+     *
+     * @param token Push token
+     * @param type  Token type
+     */
+    public static void sendGcmToken(String token, @NetworkService.PushTokenType String type) {
+        TasksManager.getInstance().addSendTokenTask(token, type);
     }
 
     /**
@@ -399,7 +409,7 @@ public class StickersManager {
     /**
      * Clear all stored stickers
      */
-    public static void clearCache(){
+    public static void clearCache() {
         StorageManager.getInstance().clearCache();
     }
 }

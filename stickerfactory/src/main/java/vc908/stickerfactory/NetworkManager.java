@@ -171,18 +171,10 @@ public final class NetworkManager {
 
     }
 
-    /**
-     * Send gcm token to serverside
-     *
-     * @param token Gcm token
-     */
-    public void sendGcmToken(String token) {
-        mNetworkService.sendToken(token)
+    public Observable<NetworkResponseModel> requestSendToken(String token, String type) {
+        return mNetworkService.sendToken(token, type)
                 .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(
-                        o -> StorageManager.getInstance().storeIsGcmTokenSent(true),
-                        throwable -> StorageManager.getInstance().storeIsGcmTokenSent(false));
+                .observeOn(AndroidSchedulers.mainThread());
     }
 
 

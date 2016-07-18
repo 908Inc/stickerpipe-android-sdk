@@ -13,6 +13,7 @@ import vc908.stickerfactory.User;
 import vc908.stickerfactory.billing.Prices;
 import vc908.stickerfactory.utils.Utils;
 import vc908.stickerpipe.gcmintegration.GcmManager;
+import vc908.stickerpipe.jpushintegration.JpushManager;
 import vc908.stickersample.ui.ShopActivity;
 
 /**
@@ -54,5 +55,6 @@ public class App extends Application {
                 .setPricePointB("$0.99", 0.99f)
                 .setPricePointC("$1.99", 1.99f)
         );
+        JpushManager.init(this);
     }
 }

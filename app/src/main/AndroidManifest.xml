@@ -1,30 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
-          package="vc908.stickersample">
+<manifest package="vc908.stickersample"
+          xmlns:android="http://schemas.android.com/apk/res/android">
 
     <uses-permission android:name="android.permission.INTERNET"/>
 
     <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
 
-    <permission android:name="vc908.stickersample.permission.C2D_MESSAGE"
-                android:protectionLevel="signature" />
-    <uses-permission android:name="vc908.stickersample.permission.C2D_MESSAGE" />
+    <permission
+        android:name="vc908.stickersample.permission.C2D_MESSAGE"
+        android:protectionLevel="signature"/>
+
+    <uses-permission android:name="vc908.stickersample.permission.C2D_MESSAGE"/>
 
 
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.WAKE_LOCK" />
-    <uses-permission android:name="android.permission.VIBRATE" />
-    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
-    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
-    <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.WAKE_LOCK"/>
+    <uses-permission android:name="android.permission.VIBRATE"/>
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
+    <uses-permission android:name="android.permission.GET_ACCOUNTS"/>
+    <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE"/>
 
 
     <application
+        android:name=".App"
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
-        android:theme="@style/AppTheme"
-        android:name=".App">
+        android:theme="@style/AppTheme">
         <activity
             android:name=".ui.MainActivity"
             android:label="@string/app_name"
@@ -36,8 +38,13 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".ui.ShopActivity" android:launchMode="singleInstance"/>
-        <activity android:name=".ui.FullscreenStickersActivity" android:launchMode="singleInstance"/>
+        <activity
+            android:name=".ui.ShopActivity"
+            android:launchMode="singleInstance"/>
+        <activity
+            android:name=".ui.FullscreenStickersActivity"
+            android:launchMode="singleInstance"/>
+
         <provider
             android:name="vc908.stickerfactory.provider.StickersProvider"
             android:authorities="vc908.stickersample.stickersProvider"
@@ -46,11 +53,12 @@
         <receiver
             android:name="com.google.android.gms.gcm.GcmReceiver"
             android:exported="true"
-            android:permission="com.google.android.c2dm.permission.SEND" >
+            android:permission="com.google.android.c2dm.permission.SEND">
             <intent-filter>
-                <action android:name="com.google.android.c2dm.intent.REGISTRATION" />
-                <action android:name="com.google.android.c2dm.intent.RECEIVE" />
-                <category android:name="vc908.stickersample" />
+                <action android:name="com.google.android.c2dm.intent.REGISTRATION"/>
+                <action android:name="com.google.android.c2dm.intent.RECEIVE"/>
+
+                <category android:name="vc908.stickersample"/>
             </intent-filter>
         </receiver>
 
@@ -60,7 +68,71 @@
 
         <meta-data
             android:name="io.fabric.ApiKey"
-            android:value="${fabrikApiKey}" />
+            android:value="${fabrikApiKey}"/>
+
+        <!-- JPUSH -->
+
+        <receiver
+            android:name="vc908.stickerpipe.jpushintegration.JpushReceiver"
+            android:enabled="true">
+            <intent-filter>
+                <action android:name="cn.jpush.android.intent.REGISTRATION"/>
+                <action android:name="cn.jpush.android.intent.MESSAGE_RECEIVED"/>
+                <action android:name="cn.jpush.android.intent.NOTIFICATION_RECEIVED"/>
+                <action android:name="cn.jpush.android.intent.NOTIFICATION_OPENED"/>
+                <action android:name="cn.jpush.android.intent.ACTION_RICHPUSH_CALLBACK"/>
+                <action android:name="cn.jpush.android.intent.CONNECTION"/>
+
+                <category android:name="vc908.stickersample"/>
+            </intent-filter>
+        </receiver>
+
+        <activity
+            android:name="cn.jpush.android.ui.PushActivity"
+            android:configChanges="orientation|keyboardHidden"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="cn.jpush.android.ui.PushActivity"/>
+
+                <category android:name="android.intent.category.DEFAULT"/>
+                <category android:name="vc908.stickersample"/>
+            </intent-filter>
+        </activity>
+
+        <receiver
+            android:name="cn.jpush.android.service.PushReceiver"
+            android:enabled="true"
+            android:exported="false">
+            <intent-filter android:priority="1000">
+                <action android:name="cn.jpush.android.intent.NOTIFICATION_RECEIVED_PROXY"/>
+                <category android:name="vc908.stickersample"/>
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.USER_PRESENT"/>
+                <action android:name="android.net.conn.CONNECTIVITY_CHANGE"/>
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.PACKAGE_ADDED"/>
+                <action android:name="android.intent.action.PACKAGE_REMOVED"/>
+
+                <data android:scheme="package"/>
+            </intent-filter>
+        </receiver>
+
+        <service
+            android:name="cn.jpush.android.service.DaemonService"
+            android:enabled="true"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="cn.jpush.android.intent.DaemonService"/>
+                <category android:name="vc908.stickersample"/>
+            </intent-filter>
+        </service>
+
+        <meta-data
+            android:name="JPUSH_APPKEY"
+            android:value="e39b00309b3b6b4c2fe4481f"/>
+
     </application>
 
 </manifest>

@@ -5,6 +5,12 @@ android {
     compileSdkVersion 23
     buildToolsVersion "23.0.3"
 
+    sourceSets {
+        main {
+            jniLibs.srcDirs = ['libs']
+        }
+    }
+
     defaultConfig {
         minSdkVersion 14
         targetSdkVersion 23
@@ -18,9 +24,12 @@ android {
         }
     }
 }
+
 dependencies {
-    compile 'com.google.android.gms:play-services-gcm:9.0.2'
+    compile fileTree(dir: 'libs', include: ['*.jar'])
     compile project(':stickerfactory')
+    compile project(':gcmintegration')
+    compile 'com.google.android.gms:play-services-base:9.0.2'
 }
 
 // Publish archive task
