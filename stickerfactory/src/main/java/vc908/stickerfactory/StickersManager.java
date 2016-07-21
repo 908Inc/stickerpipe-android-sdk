@@ -41,7 +41,7 @@ public class StickersManager {
     public static boolean isEmojiTabEnabled = true;
     public static boolean hideEmptyRecentTab = false;
     public static boolean isSearchTabEnabled = true;
-    public static boolean isStickerPreviewEnabled = true;
+    public static boolean isStickerPreviewEnabled = false;
     private static EmojiSettingsBuilder emojiSettingsBuilder;
     private static Prices prices;
     public static boolean useMaxImagesSize = false;

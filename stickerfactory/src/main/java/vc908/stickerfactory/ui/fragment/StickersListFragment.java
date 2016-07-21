@@ -376,29 +376,35 @@ public class StickersListFragment extends Fragment implements LoaderManager.Load
         };
 
         View.OnTouchListener imageTouchListener = (v, event) -> {
-            longPressGestureListener.setCurrentView(v);
+            if (longPressGestureListener != null) {
+                longPressGestureListener.setCurrentView(v);
+            }
             if (v instanceof ImageView) {
                 ImageView touchedImageView = (ImageView) v;
-                switch (event.getActionMasked()) {
-                    case MotionEvent.ACTION_DOWN:
-                    case MotionEvent.ACTION_POINTER_DOWN:
-                        touchedImageView.getDrawable().setColorFilter(selectedItemFilterColor);
-                        handler.postDelayed(longPressDetectorRunnable, LONG_PRESS_TIME);
-                        break;
-                    case MotionEvent.ACTION_UP:
-                    case MotionEvent.ACTION_POINTER_UP:
-                        stickerPreviewDelegate.hideStickerPreview();
-                        touchedImageView.getDrawable().setColorFilter(null);
-                        handler.removeCallbacks(longPressDetectorRunnable);
-                        break;
-                    case MotionEvent.ACTION_CANCEL:
-                        touchedImageView.getDrawable().setColorFilter(null);
-                        handler.removeCallbacks(longPressDetectorRunnable);
-                        break;
-                    default:
+                if (touchedImageView.getDrawable() != null) {
+                    switch (event.getActionMasked()) {
+                        case MotionEvent.ACTION_DOWN:
+                        case MotionEvent.ACTION_POINTER_DOWN:
+                            touchedImageView.getDrawable().setColorFilter(selectedItemFilterColor);
+                            handler.postDelayed(longPressDetectorRunnable, LONG_PRESS_TIME);
+                            break;
+                        case MotionEvent.ACTION_UP:
+                        case MotionEvent.ACTION_POINTER_UP:
+                            if (stickerPreviewDelegate != null) {
+                                stickerPreviewDelegate.hideStickerPreview();
+                            }
+                            touchedImageView.getDrawable().setColorFilter(null);
+                            handler.removeCallbacks(longPressDetectorRunnable);
+                            break;
+                        case MotionEvent.ACTION_CANCEL:
+                            touchedImageView.getDrawable().setColorFilter(null);
+                            handler.removeCallbacks(longPressDetectorRunnable);
+                            break;
+                        default:
+                    }
                 }
             }
-            if (stickerPreviewDelegate.isPackPreviewVisible()) {
+            if (stickerPreviewDelegate != null && stickerPreviewDelegate.isPackPreviewVisible()) {
                 if (v.getParent() != null) {
                     v.getParent().requestDisallowInterceptTouchEvent(true);
                     return true;
