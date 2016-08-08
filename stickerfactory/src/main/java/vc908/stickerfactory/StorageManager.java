@@ -78,6 +78,7 @@ public class StorageManager extends PreferenceHelper {
     private static final String PREF_KEY_USER_ID = "user_id_key";
     private static final String PREF_KEY_IS_GCM_TOKEN_SENT_KEY = "sp_is_gcm_token_sent_key";
     private static final String PREF_KEY_CUSTOM_LOCALIZATION = "pref_key_custom_localization";
+    private static final String PREF_KEY_CUSTOM_CONTENT_LOCALIZATION = "pref_key_custom_content_localization";
     private static final String PREF_KEY_USER_SUBSCRIPTION = "pref_user_subscription";
     private static final String PREF_KEY_USER_DATA = "pref_key_user_data";
     private static final String PREF_KEY_PRICE_POINTS = "pref_key_pricepoints";
@@ -782,6 +783,25 @@ public class StorageManager extends PreferenceHelper {
     @Nullable
     public String getCustomLocalization() {
         return getStringValue(PREF_KEY_CUSTOM_LOCALIZATION);
+    }
+
+    /**
+     * Store custom content localization for purchasing
+     *
+     * @param customContentLocalizationCode Content localization
+     */
+    public void storeCustomContentLocalization(String customContentLocalizationCode) {
+        storeValue(PREF_KEY_CUSTOM_CONTENT_LOCALIZATION, customContentLocalizationCode);
+    }
+
+    /**
+     * Get stored custom content localization for purchasing
+     *
+     * @return Stored custom localization
+     */
+    @Nullable
+    public String getCustomContentLocalization() {
+        return getStringValue(PREF_KEY_CUSTOM_CONTENT_LOCALIZATION);
     }
 
     /**

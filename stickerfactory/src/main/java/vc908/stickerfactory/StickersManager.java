@@ -312,6 +312,17 @@ public class StickersManager {
     }
 
     /**
+     * Store custom content localization for purchasing
+     *
+     * @param customContentLocalizationCode Localization code
+     */
+    public static void setCustomContentLocalization(String customContentLocalizationCode) {
+        if (!TextUtils.isEmpty(customContentLocalizationCode)) {
+            StorageManager.getInstance().storeCustomContentLocalization(customContentLocalizationCode);
+        }
+    }
+
+    /**
      * Set custom emoji settings builder
      *
      * @param emojiSettingsBuilder Emoji settings builder

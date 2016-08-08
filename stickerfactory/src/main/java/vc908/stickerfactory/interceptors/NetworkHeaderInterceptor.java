@@ -43,7 +43,9 @@ public class NetworkHeaderInterceptor implements Interceptor {
     public Response intercept(Chain chain) throws IOException {
         Request request = chain.request();
         Request.Builder builder = request.newBuilder();
-        for (Map.Entry<String, String> entry : getHeaders().entrySet()) {
+        Map<String, String> currentHeader = getHeaders();
+        checkForCustomContentLocalization(chain, currentHeader);
+        for (Map.Entry<String, String> entry : currentHeader.entrySet()) {
             builder.addHeader(entry.getKey(), entry.getValue());
         }
         return chain.proceed(builder.build());
@@ -57,5 +59,17 @@ public class NetworkHeaderInterceptor implements Interceptor {
         }
         headersCopy.put("Localization", StorageManager.getInstance().getCurrentLocalization());
         return headersCopy;
+    }
+
+    private void checkForCustomContentLocalization(Chain chain, Map<String, String> currentHeaders) {
+        String customPurchaseLocalization = StorageManager.getInstance().getCustomContentLocalization();
+        if (!TextUtils.isEmpty(customPurchaseLocalization)
+                && chain != null
+                && chain.request() != null
+                && "POST".equals(chain.request().method())
+                && chain.request().url() != null
+                && chain.request().url().toString().contains("/packs")) {
+            currentHeaders.put("Localization", customPurchaseLocalization);
+        }
     }
 }
