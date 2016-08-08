@@ -134,6 +134,7 @@
 
 -keep public class vc908.stickerfactory.emoji.Emoji{*;}
 -keep public class vc908.stickerfactory.utils.Utils{*;}
+-keep public class vc908.stickerfactory.utils.NamesHelper{*;}
 -keep public class vc908.stickerfactory.utils.CompatUtils{*;}
 -keep public class vc908.stickerfactory.utils.KeyboardUtils{*;}
 

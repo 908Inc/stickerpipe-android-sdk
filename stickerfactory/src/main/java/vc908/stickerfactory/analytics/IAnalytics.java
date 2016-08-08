@@ -11,6 +11,7 @@ public interface IAnalytics {
 
     enum Category {
         PACK("pack"),
+        STAMP("stamp"),
         STICKER("sticker"),
         EMOJI("emoji"),
         MESSAGE("message"),
