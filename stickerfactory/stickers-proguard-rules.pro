@@ -142,6 +142,7 @@
 -keep public class vc908.stickerfactory.billing.Prices{*;}
 
 -keep class vc908.stickerfactory.model.** { *; }
+-keep class vc908.stickerfactory.events.** { *; }
 
 -keep class vc908.stickerfactory.User { *; }
 

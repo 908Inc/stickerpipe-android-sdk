@@ -21,9 +21,13 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
+import de.greenrobot.event.EventBus;
 import vc908.stickerfactory.StickersKeyboardController;
 import vc908.stickerfactory.StickersManager;
+import vc908.stickerfactory.events.PendingTasksCompletedEvent;
+import vc908.stickerfactory.model.Filter;
 import vc908.stickerfactory.ui.OnStickerSelectedListener;
 import vc908.stickerfactory.ui.fragment.StickersFragment;
 import vc908.stickerfactory.ui.view.BadgedStickersButton;
@@ -40,12 +44,19 @@ public class MainActivity extends AppCompatActivity {
     private EditText editMessage;
     private ListView list;
     private StickersKeyboardController stickersKeyboardController;
+    private TextView filterList;
+    private View filterProgress;
+    private View filterReload;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getWindow().setBackgroundDrawableResource(android.R.color.transparent);
         setContentView(R.layout.activity_main);
+
+        filterList = (TextView) findViewById(R.id.filter_list);
+        filterProgress = findViewById(R.id.filter_progress);
+        filterReload = findViewById(R.id.filter_reload);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar.setTitleTextColor(0xFFFFFFFF);
@@ -109,6 +120,49 @@ public class MainActivity extends AppCompatActivity {
         });
         addMockData();
         processIntent(getIntent());
+        showFilters();
+        filterReload.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                filterProgress.setVisibility(View.VISIBLE);
+                filterList.setText("");
+                StickersManager.updateStampsForce();
+            }
+        });
+    }
+
+    private void showFilters() {
+        filterProgress.setVisibility(View.GONE);
+        StringBuilder sb = new StringBuilder();
+        Map<String, Filter> filters = StickersManager.getFilters();
+        for (Map.Entry<String, Filter> entry : filters.entrySet()) {
+            sb.append(entry.getKey());
+            sb.append("\n");
+            for (Filter.Item item : entry.getValue().getItems()) {
+                for (String tag : item.getTags()) {
+                    sb.append(tag);
+                    sb.append(",");
+                }
+                sb.append("\n");
+            }
+        }
+        filterList.setText(sb.toString());
+    }
+
+    public void onEventMainThread(PendingTasksCompletedEvent event) {
+        showFilters();
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        EventBus.getDefault().register(this);
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        EventBus.getDefault().unregister(this);
     }
 
     @Override

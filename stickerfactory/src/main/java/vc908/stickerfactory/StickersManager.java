@@ -11,6 +11,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentActivity;
 import android.text.TextUtils;
 
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 import de.greenrobot.event.EventBus;
@@ -19,6 +20,7 @@ import vc908.stickerfactory.analytics.AnalyticsManager;
 import vc908.stickerfactory.analytics.LocalAnalyticsImpl;
 import vc908.stickerfactory.billing.BillingManager;
 import vc908.stickerfactory.billing.Prices;
+import vc908.stickerfactory.model.Filter;
 import vc908.stickerfactory.model.StickersPack;
 import vc908.stickerfactory.provider.StickersProvider;
 import vc908.stickerfactory.ui.activity.ShopWebViewActivity;
@@ -422,5 +424,21 @@ public class StickersManager {
      */
     public static void clearCache() {
         StorageManager.getInstance().clearCache();
+    }
+
+    /**
+     * Call to update stamps list
+     */
+    public static void updateStampsForce() {
+        NetworkManager.getInstance().updateStamps();
+    }
+
+    /**
+     * Get stored filters
+     *
+     * @return Filters list
+     */
+    public static LinkedHashMap<String, Filter> getFilters() {
+        return StorageManager.getInstance().getFilters();
     }
 }

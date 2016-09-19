@@ -34,6 +34,9 @@ public interface NetworkService {
     @GET("shop/my")
     Observable<StickersResponse> getUserStickersList(@Query("is_subscriber") int isSubscriber);
 
+    @GET("shop/stamps")
+    Observable<StickersResponse> getStamps();
+
     @DELETE("packs/{packName}")
     Observable<NetworkResponseModel> hidePack(@Path("packName") String packName);
 

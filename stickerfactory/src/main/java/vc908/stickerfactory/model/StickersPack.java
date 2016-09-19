@@ -63,7 +63,7 @@ public class StickersPack {
     @Expose
     private String description;
 
-    @Expose
+//    @Expose
     @SerializedName("updated_at")
     private long lastModifyDate;
 

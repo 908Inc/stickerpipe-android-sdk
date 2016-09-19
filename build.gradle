@@ -6,7 +6,7 @@ buildscript {
         }
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:2.2.0-alpha6'
+        classpath 'com.android.tools.build:gradle:2.2.0-rc2'
         classpath 'me.tatarka:gradle-retrolambda:3.1.0'
     }
 }
@@ -32,8 +32,8 @@ try {
     throw new GradleException("Can't load configs file");
 }
 
-ext.sdkVersionName = "0.13.3"
-ext.minifyEnableMode = true
+ext.sdkVersionName = "dev-0.13.4.1"
+ext.minifyEnableMode = false
 ext.groupName = "vc908.stickers"
 
 ext.artifactoryUrl = props.getProperty("ARTIFACTORY_URL")

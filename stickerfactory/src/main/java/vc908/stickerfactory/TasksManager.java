@@ -9,6 +9,7 @@ import java.util.Map;
 
 import de.greenrobot.event.EventBus;
 import retrofit2.adapter.rxjava.HttpException;
+import vc908.stickerfactory.events.PendingTasksCompletedEvent;
 import vc908.stickerfactory.events.TaskExecutedEvent;
 import vc908.stickerfactory.model.StickersPack;
 import vc908.stickerfactory.utils.Logger;
@@ -168,6 +169,7 @@ public class TasksManager {
                     executeTask(task);
                 } else {
                     StorageManager.getInstance().setAllTasksPending();
+                    EventBus.getDefault().post(new PendingTasksCompletedEvent());
                 }
             } else {
                 StorageManager.getInstance().setAllTasksPending();

@@ -24,8 +24,10 @@ import java.io.IOException;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import de.greenrobot.event.EventBus;
 import rx.Observable;
@@ -36,6 +38,7 @@ import vc908.stickerfactory.billing.Prices;
 import vc908.stickerfactory.events.PackMarkStatusChangedEvent;
 import vc908.stickerfactory.events.PackTabImageDownloadedEvent;
 import vc908.stickerfactory.events.UserShopContentVisitLastModifiedUpdatedEvent;
+import vc908.stickerfactory.model.Filter;
 import vc908.stickerfactory.model.Sticker;
 import vc908.stickerfactory.model.StickersPack;
 import vc908.stickerfactory.provider.StickersProvider;
@@ -87,6 +90,7 @@ public class StorageManager extends PreferenceHelper {
     private static final String PREF_KEY_USER_SHOP_CONTENT_VISIT_LAST_MODIFIED = "pref_key_user_shop_content_visit_last_modified";
     private static final String PREF_KEY_PACK_TO_SHOW_NAME = "pref_key_pack_to_show";
     private static final String PREF_KEY_MARKED_PACK_PREFIX = "pref_key_marked_pack_prefix_";
+    private static final String PREF_KEY_FILTERS = "pref_key_filters";
 
     private final AsyncQueryHandler asyncQueryHandler;
 
@@ -1004,6 +1008,7 @@ public class StorageManager extends PreferenceHelper {
     public Observable<Boolean> storeOrUpdatePackWithStickers(@NonNull StickersPack pack) {
         return Observable.<Boolean>create(subscriber -> {
             Map<String, String> imagesToCache = new HashMap<>();
+            Filter filter = new Filter(pack.getName());
             // cache tab icon
             if (pack.getTabIconLinks() != null) {
                 String imageLink = pack.getTabIconLinks().get(Utils.getDensityName(mContext));
@@ -1030,6 +1035,13 @@ public class StorageManager extends PreferenceHelper {
                             imagesToCache.put(sticker.getContentId(), imageLink);
                         }
                     }
+                    if (sticker != null && sticker.getTags().size() > 0) {
+                        Filter.Item item = new Filter.Item(sticker.getContentId());
+                        for (String tag : sticker.getTags()) {
+                            item.getTags().add(tag);
+                        }
+                        filter.getItems().add(item);
+                    }
                 }
             }
             if (imagesToCache.size() > 0) {
@@ -1046,10 +1058,37 @@ public class StorageManager extends PreferenceHelper {
             }
             storeOrUpdatePackInfo(pack);
             updateStickersInfo(pack);
+            if (filter.getItems().size() > 0) {
+                StorageManager.getInstance().storeFilter(filter);
+            }
 
             subscriber.onNext(true);
             subscriber.onCompleted();
         }).subscribeOn(Schedulers.io());
+    }
+
+    private void storeFilter(Filter filter) {
+        Map<String, Filter> currentFilters = getFilters();
+        currentFilters.put(filter.getPackName(), filter);
+        storeValue(PREF_KEY_FILTERS, gson.toJson(currentFilters));
+    }
+
+    public void removeFilters(Set<String> filters) {
+        Map<String, Filter> currentFilters = getFilters();
+        for (String filterName : filters) {
+            currentFilters.remove(filterName);
+        }
+        storeValue(PREF_KEY_FILTERS, gson.toJson(currentFilters));
+    }
+
+    public LinkedHashMap<String, Filter> getFilters() {
+        Type type = new TypeToken<LinkedHashMap<String, Filter>>() {
+        }.getType();
+        LinkedHashMap<String, Filter> data = gson.fromJson(getStringValue(PREF_KEY_FILTERS), type);
+        if (data == null) {
+            data = new LinkedHashMap<>();
+        }
+        return data;
     }
 
     /**

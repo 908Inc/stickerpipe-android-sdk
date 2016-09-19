@@ -23,6 +23,7 @@ import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 import okhttp3.ResponseBody;
+import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
@@ -31,6 +32,7 @@ import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 import vc908.stickerfactory.events.ShopContentLastModifiedUpdatedEvent;
 import vc908.stickerfactory.interceptors.NetworkHeaderInterceptor;
+import vc908.stickerfactory.model.Filter;
 import vc908.stickerfactory.model.StickersPack;
 import vc908.stickerfactory.model.response.ContentResponse;
 import vc908.stickerfactory.model.response.NetworkResponseModel;
@@ -46,7 +48,7 @@ import vc908.stickerfactory.utils.Utils;
  */
 public final class NetworkManager {
 
-    private static final String BASE_URL_API = "https://api.stickerpipe.com";
+    public static String BASE_URL_API = "https://api.stickerpipe.com";
 
     private static final String API_PATH = "/api/v2/";
     public static final String API_URL = BASE_URL_API + API_PATH;
@@ -82,9 +84,9 @@ public final class NetworkManager {
         mOkHttpClientBuilder.connectTimeout(60, TimeUnit.SECONDS);
         mOkHttpClientBuilder.readTimeout(60, TimeUnit.SECONDS);
         mOkHttpClientBuilder.writeTimeout(60, TimeUnit.SECONDS);
-//        HttpLoggingInterceptor httpLoginInterceptors = new HttpLoggingInterceptor();
-//        httpLoginInterceptors.setLevel(HttpLoggingInterceptor.Level.BODY);
-//        mOkHttpClientBuilder.networkInterceptors().add(httpLoginInterceptors);
+        HttpLoggingInterceptor httpLoginInterceptors = new HttpLoggingInterceptor();
+        httpLoginInterceptors.setLevel(HttpLoggingInterceptor.Level.BODY);
+        mOkHttpClientBuilder.networkInterceptors().add(httpLoginInterceptors);
 
         if (customInterceptor != null) {
             mOkHttpClientBuilder.networkInterceptors().add(customInterceptor);
@@ -169,6 +171,29 @@ public final class NetworkManager {
                     );
         }
 
+    }
+
+    public void updateStamps() {
+        if (Utils.isNetworkAvailable(mContext)) {
+            mNetworkService.getStamps()
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(
+                            response -> {
+                                if (response.getData() != null) {
+                                    Map<String, Filter> filters = StorageManager.getInstance().getFilters();
+                                    for (StickersPack pack : response.getData()) {
+                                        TasksManager.getInstance().addPackPurchaseTask(pack.getName(), StickersPack.PurchaseType.FREE, false);
+                                        filters.remove(pack.getName());
+                                    }
+                                    StorageManager.getInstance().removeFilters(filters.keySet());
+                                } else {
+                                    Logger.w(TAG, "Data is null for user packs");
+                                }
+                            },
+                            this::onNetworkResponseFail
+                    );
+        }
     }
 
     public Observable<NetworkResponseModel> requestSendToken(String token, String type) {
