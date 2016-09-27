@@ -32,7 +32,6 @@ import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 import vc908.stickerfactory.events.ShopContentLastModifiedUpdatedEvent;
 import vc908.stickerfactory.interceptors.NetworkHeaderInterceptor;
-import vc908.stickerfactory.model.Filter;
 import vc908.stickerfactory.model.StickersPack;
 import vc908.stickerfactory.model.response.ContentResponse;
 import vc908.stickerfactory.model.response.NetworkResponseModel;
@@ -174,26 +173,26 @@ public final class NetworkManager {
     }
 
     public void updateStamps() {
-        if (Utils.isNetworkAvailable(mContext)) {
-            mNetworkService.getStamps()
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(
-                            response -> {
-                                if (response.getData() != null) {
-                                    Map<String, Filter> filters = StorageManager.getInstance().getFilters();
-                                    for (StickersPack pack : response.getData()) {
-                                        TasksManager.getInstance().addPackPurchaseTask(pack.getName(), StickersPack.PurchaseType.FREE, false);
-                                        filters.remove(pack.getName());
-                                    }
-                                    StorageManager.getInstance().removeFilters(filters.keySet());
-                                } else {
-                                    Logger.w(TAG, "Data is null for user packs");
-                                }
-                            },
-                            this::onNetworkResponseFail
-                    );
-        }
+//        if (Utils.isNetworkAvailable(mContext)) {
+//            mNetworkService.getStamps()
+//                    .subscribeOn(Schedulers.io())
+//                    .observeOn(AndroidSchedulers.mainThread())
+//                    .subscribe(
+//                            response -> {
+//                                if (response.getData() != null) {
+//                                    Map<String, Filter> filters = StorageManager.getInstance().getFilters();
+//                                    for (StickersPack pack : response.getData()) {
+//                                        TasksManager.getInstance().addPackPurchaseTask(pack.getName(), StickersPack.PurchaseType.FREE, false);
+//                                        filters.remove(pack.getName());
+//                                    }
+//                                    StorageManager.getInstance().removeFilters(filters.keySet());
+//                                } else {
+//                                    Logger.w(TAG, "Data is null for user packs");
+//                                }
+//                            },
+//                            this::onNetworkResponseFail
+//                    );
+//        }
     }
 
     public Observable<NetworkResponseModel> requestSendToken(String token, String type) {
