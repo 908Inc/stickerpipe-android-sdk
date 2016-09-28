@@ -32,7 +32,7 @@ try {
     throw new GradleException("Can't load configs file");
 }
 
-ext.sdkVersionName = "dev-0.13.4.1"
+ext.sdkVersionName = "0.13.5"
 ext.minifyEnableMode = false
 ext.groupName = "vc908.stickers"
 

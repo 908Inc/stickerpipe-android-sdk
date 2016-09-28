@@ -91,6 +91,7 @@ public class StorageManager extends PreferenceHelper {
     private static final String PREF_KEY_PACK_TO_SHOW_NAME = "pref_key_pack_to_show";
     private static final String PREF_KEY_MARKED_PACK_PREFIX = "pref_key_marked_pack_prefix_";
     private static final String PREF_KEY_FILTERS = "pref_key_filters";
+    private static final String PREF_KEY_USER_SPLIT_GROUP = "pref_key_user_split_group";
 
     private final AsyncQueryHandler asyncQueryHandler;
 
@@ -455,6 +456,7 @@ public class StorageManager extends PreferenceHelper {
                 clearUserData();
                 NetworkManager.getInstance().checkPackUpdates();
             }
+            data = SplitManager.addSplitData(data);
             // check meta data
             if (data != null && !data.isEmpty()) {
                 Map<String, String> storedData = StorageManager.getInstance().getUserData();
@@ -468,6 +470,25 @@ public class StorageManager extends PreferenceHelper {
             clearUserData();
         }
     }
+
+    /**
+     * Get current user split group
+     *
+     * @return Split group name
+     */
+    public String getUserSplitGroup() {
+        return getStringValue(PREF_KEY_USER_SPLIT_GROUP);
+    }
+
+    /**
+     * Strore split group for current user
+     *
+     * @param group Split group name
+     */
+    public void storeUserSplitGroup(String group) {
+        storeValue(PREF_KEY_USER_SPLIT_GROUP, group);
+    }
+
 
     // Remove all user related data
     private void clearUserData() {
