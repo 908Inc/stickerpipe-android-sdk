@@ -60,4 +60,7 @@ public interface NetworkService {
     @GET("search")
     Observable<SearchResponse> getSearchResults(@Query("q") String query, @Query("limit") int limit, @Query("top_if_empty") int topIfEmpty, @Query("whole_word") int wholeWord);
 
+    @GET("stamps/search")
+    Observable<SearchResponse> getStampsSearchResults(@Query("q") String query, @Query("limit") int limit);
+
 }

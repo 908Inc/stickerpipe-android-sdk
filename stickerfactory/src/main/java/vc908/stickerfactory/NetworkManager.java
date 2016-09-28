@@ -229,6 +229,12 @@ public final class NetworkManager {
                 .observeOn(AndroidSchedulers.mainThread());
     }
 
+    public Observable<SearchResponse> requestStampsSearch(String query) {
+        return mNetworkService.getStampsSearchResults(query, Constants.SEARCH_STICKERS_LIMIT)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread());
+    }
+
 
     /**
      * Request hide pack

@@ -5,7 +5,9 @@ import android.support.annotation.NonNull;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -23,6 +25,9 @@ public class SearchResultItem {
     @Expose
     private Map<String, String> image = new HashMap<>();
 
+    @Expose
+    private List<String> tags = new ArrayList<>();
+
     public String getPack() {
         return pack;
     }
@@ -36,12 +41,17 @@ public class SearchResultItem {
         return image;
     }
 
+    public List<String> getTags() {
+        return tags;
+    }
+
     @Override
     public String toString() {
-        return "SearchResult{" +
+        return "SearchResultItem{" +
                 "pack='" + pack + '\'' +
                 ", contentId='" + contentId + '\'' +
                 ", image=" + image +
+                ", tags=" + tags +
                 '}';
     }
 
