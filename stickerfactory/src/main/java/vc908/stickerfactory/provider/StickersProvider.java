@@ -14,6 +14,7 @@ import vc908.stickerfactory.provider.analytics.AnalyticsColumns;
 import vc908.stickerfactory.provider.base.BaseContentProvider;
 import vc908.stickerfactory.provider.packs.PacksColumns;
 import vc908.stickerfactory.provider.pendingtasks.PendingTasksColumns;
+import vc908.stickerfactory.provider.recentlyemoji.RecentlyEmojiColumns;
 import vc908.stickerfactory.provider.recentlystickers.RecentlyStickersColumns;
 import vc908.stickerfactory.provider.stickers.StickersColumns;
 
@@ -34,11 +35,14 @@ public class StickersProvider extends BaseContentProvider {
     private static final int URI_TYPE_PENDING_TASKS = 4;
     private static final int URI_TYPE_PENDING_TASKS_ID = 5;
 
-    private static final int URI_TYPE_RECENTLY_STICKERS = 6;
-    private static final int URI_TYPE_RECENTLY_STICKERS_ID = 7;
+    private static final int URI_TYPE_RECENTLY_EMOJI = 6;
+    private static final int URI_TYPE_RECENTLY_EMOJI_ID = 7;
 
-    private static final int URI_TYPE_STICKERS = 8;
-    private static final int URI_TYPE_STICKERS_ID = 9;
+    private static final int URI_TYPE_RECENTLY_STICKERS = 8;
+    private static final int URI_TYPE_RECENTLY_STICKERS_ID = 9;
+
+    private static final int URI_TYPE_STICKERS = 10;
+    private static final int URI_TYPE_STICKERS_ID = 11;
 
 
 
@@ -57,6 +61,8 @@ public class StickersProvider extends BaseContentProvider {
         URI_MATCHER.addURI(AUTHORITY, PacksColumns.TABLE_NAME + "/#", URI_TYPE_PACKS_ID);
         URI_MATCHER.addURI(AUTHORITY, PendingTasksColumns.TABLE_NAME, URI_TYPE_PENDING_TASKS);
         URI_MATCHER.addURI(AUTHORITY, PendingTasksColumns.TABLE_NAME + "/#", URI_TYPE_PENDING_TASKS_ID);
+        URI_MATCHER.addURI(AUTHORITY, RecentlyEmojiColumns.TABLE_NAME, URI_TYPE_RECENTLY_EMOJI);
+        URI_MATCHER.addURI(AUTHORITY, RecentlyEmojiColumns.TABLE_NAME + "/#", URI_TYPE_RECENTLY_EMOJI_ID);
         URI_MATCHER.addURI(AUTHORITY, RecentlyStickersColumns.TABLE_NAME, URI_TYPE_RECENTLY_STICKERS);
         URI_MATCHER.addURI(AUTHORITY, RecentlyStickersColumns.TABLE_NAME + "/#", URI_TYPE_RECENTLY_STICKERS_ID);
         URI_MATCHER.addURI(AUTHORITY, StickersColumns.TABLE_NAME, URI_TYPE_STICKERS);
@@ -91,6 +97,11 @@ public class StickersProvider extends BaseContentProvider {
                 return TYPE_CURSOR_DIR + PendingTasksColumns.TABLE_NAME;
             case URI_TYPE_PENDING_TASKS_ID:
                 return TYPE_CURSOR_ITEM + PendingTasksColumns.TABLE_NAME;
+
+            case URI_TYPE_RECENTLY_EMOJI:
+                return TYPE_CURSOR_DIR + RecentlyEmojiColumns.TABLE_NAME;
+            case URI_TYPE_RECENTLY_EMOJI_ID:
+                return TYPE_CURSOR_ITEM + RecentlyEmojiColumns.TABLE_NAME;
 
             case URI_TYPE_RECENTLY_STICKERS:
                 return TYPE_CURSOR_DIR + RecentlyStickersColumns.TABLE_NAME;
@@ -168,6 +179,14 @@ public class StickersProvider extends BaseContentProvider {
                 res.orderBy = PendingTasksColumns.DEFAULT_ORDER;
                 break;
 
+            case URI_TYPE_RECENTLY_EMOJI:
+            case URI_TYPE_RECENTLY_EMOJI_ID:
+                res.table = RecentlyEmojiColumns.TABLE_NAME;
+                res.idColumn = RecentlyEmojiColumns._ID;
+                res.tablesWithJoins = RecentlyEmojiColumns.TABLE_NAME;
+                res.orderBy = RecentlyEmojiColumns.DEFAULT_ORDER;
+                break;
+
             case URI_TYPE_RECENTLY_STICKERS:
             case URI_TYPE_RECENTLY_STICKERS_ID:
                 res.table = RecentlyStickersColumns.TABLE_NAME;
@@ -192,6 +211,7 @@ public class StickersProvider extends BaseContentProvider {
             case URI_TYPE_ANALYTICS_ID:
             case URI_TYPE_PACKS_ID:
             case URI_TYPE_PENDING_TASKS_ID:
+            case URI_TYPE_RECENTLY_EMOJI_ID:
             case URI_TYPE_RECENTLY_STICKERS_ID:
             case URI_TYPE_STICKERS_ID:
                 id = uri.getLastPathSegment();

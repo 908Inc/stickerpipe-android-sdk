@@ -230,7 +230,11 @@ public final class NetworkManager {
     }
 
     public Observable<SearchResponse> requestStampsSearch(String query) {
-        return mNetworkService.getStampsSearchResults(query, Constants.SEARCH_STICKERS_LIMIT)
+        return requestStampsSearch(query, Constants.SEARCH_STICKERS_LIMIT);
+    }
+
+    public Observable<SearchResponse> requestStampsSearch(String query, int limit) {
+        return mNetworkService.getStampsSearchResults(query, limit)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread());
     }

@@ -132,6 +132,8 @@
 
 -keep public class vc908.stickerfactory.SplitManager{*;}
 -keep public class vc908.stickerfactory.NetworkManager{*;}
+-keep public class vc908.stickerfactory.StorageManager{*;}
+-keep public interface vc908.stickerfactory.analytics.IAnalytics{*;}
 -keep public class vc908.stickerfactory.ui.fragment.StickersListFragment{*;}
 
 -keep public class vc908.stickerfactory.emoji.Emoji{*;}

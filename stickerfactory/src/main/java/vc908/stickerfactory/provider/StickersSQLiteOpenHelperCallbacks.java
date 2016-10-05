@@ -63,5 +63,8 @@ public class StickersSQLiteOpenHelperCallbacks {
             db.execSQL("DROP TABLE IF EXISTS '" + PendingTasksColumns.TABLE_NAME + "'");
             db.execSQL(StickersSQLiteOpenHelper.SQL_CREATE_TABLE_PENDING_TASKS);
         }
+        if (oldVersion < 8) {
+            db.execSQL(StickersSQLiteOpenHelper.SQL_CREATE_TABLE_RECENTLY_EMOJI);
+        }
     }
 }

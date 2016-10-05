@@ -409,6 +409,16 @@ public class StickersFragment extends Fragment implements LoaderManager.LoaderCa
     };
 
     /**
+     * Listener for emoji selection and updating last using time
+     */
+    private OnStickerSelectedListener recentEmojiTrackingListener = new SimpleStickerSelectedLister() {
+        @Override
+        public void onEmojiSelected(String code) {
+            StorageManager.getInstance().updateEmojiUsingTime(code);
+        }
+    };
+
+    /**
      * Change tabs visibility
      *
      * @param isVisible Is tab visible
@@ -492,6 +502,7 @@ public class StickersFragment extends Fragment implements LoaderManager.LoaderCa
             if (stickerSelectedListener != null) {
                 emojiFragment.addStickerSelectedListener(stickerSelectedListener);
             }
+            emojiFragment.addRecentTrackingListener(recentEmojiTrackingListener);
             emojiFragment.addStickerSelectedListener(analyticsEmojiSelectedListener);
             emojiFragment.setOnBackspaceClickListener(emojiBackspaceClickListener);
             return emojiFragment;

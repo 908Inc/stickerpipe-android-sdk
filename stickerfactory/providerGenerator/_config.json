@@ -7,7 +7,7 @@
     "sqliteOpenHelperClassName": "StickersSQLiteOpenHelper",
     "sqliteOpenHelperCallbacksClassName": "StickersSQLiteOpenHelperCallbacks",
     "databaseFileName": "stickers.db",
-    "databaseVersion": 7,
+    "databaseVersion": 8,
     "enableForeignKeys": true,
     "useAnnotations": true
 }

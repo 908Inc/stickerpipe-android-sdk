@@ -7,6 +7,7 @@ import vc908.stickerfactory.provider.StickersProvider;
 import vc908.stickerfactory.provider.analytics.AnalyticsColumns;
 import vc908.stickerfactory.provider.packs.PacksColumns;
 import vc908.stickerfactory.provider.pendingtasks.PendingTasksColumns;
+import vc908.stickerfactory.provider.recentlyemoji.RecentlyEmojiColumns;
 import vc908.stickerfactory.provider.recentlystickers.RecentlyStickersColumns;
 import vc908.stickerfactory.provider.stickers.StickersColumns;
 

@@ -13,6 +13,7 @@ import vc908.stickerfactory.BuildConfig;
 import vc908.stickerfactory.provider.analytics.AnalyticsColumns;
 import vc908.stickerfactory.provider.packs.PacksColumns;
 import vc908.stickerfactory.provider.pendingtasks.PendingTasksColumns;
+import vc908.stickerfactory.provider.recentlyemoji.RecentlyEmojiColumns;
 import vc908.stickerfactory.provider.recentlystickers.RecentlyStickersColumns;
 import vc908.stickerfactory.provider.stickers.StickersColumns;
 
@@ -20,7 +21,7 @@ public class StickersSQLiteOpenHelper extends SQLiteOpenHelper {
     private static final String TAG = StickersSQLiteOpenHelper.class.getSimpleName();
 
     public static final String DATABASE_FILE_NAME = "stickers.db";
-    private static final int DATABASE_VERSION = 7;
+    private static final int DATABASE_VERSION = 8;
     private static StickersSQLiteOpenHelper sInstance;
     private final Context mContext;
     private final StickersSQLiteOpenHelperCallbacks mOpenHelperCallbacks;
@@ -58,6 +59,14 @@ public class StickersSQLiteOpenHelper extends SQLiteOpenHelper {
             + PendingTasksColumns.VALUE + " TEXT, "
             + PendingTasksColumns.ISPENDING + " INTEGER DEFAULT 1 "
             + ", CONSTRAINT unique_action UNIQUE (category, action, value) ON CONFLICT REPLACE"
+            + " );";
+
+    public static final String SQL_CREATE_TABLE_RECENTLY_EMOJI = "CREATE TABLE IF NOT EXISTS "
+            + RecentlyEmojiColumns.TABLE_NAME + " ( "
+            + RecentlyEmojiColumns._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
+            + RecentlyEmojiColumns.LAST_USING_TIME + " INTEGER DEFAULT 0, "
+            + RecentlyEmojiColumns.CODE + " TEXT "
+            + ", CONSTRAINT unique_name UNIQUE (code) ON CONFLICT REPLACE"
             + " );";
 
     public static final String SQL_CREATE_TABLE_RECENTLY_STICKERS = "CREATE TABLE IF NOT EXISTS "
@@ -134,6 +143,7 @@ public class StickersSQLiteOpenHelper extends SQLiteOpenHelper {
         db.execSQL(SQL_CREATE_TABLE_ANALYTICS);
         db.execSQL(SQL_CREATE_TABLE_PACKS);
         db.execSQL(SQL_CREATE_TABLE_PENDING_TASKS);
+        db.execSQL(SQL_CREATE_TABLE_RECENTLY_EMOJI);
         db.execSQL(SQL_CREATE_TABLE_RECENTLY_STICKERS);
         db.execSQL(SQL_CREATE_TABLE_STICKERS);
         mOpenHelperCallbacks.onPostCreate(mContext, db);
