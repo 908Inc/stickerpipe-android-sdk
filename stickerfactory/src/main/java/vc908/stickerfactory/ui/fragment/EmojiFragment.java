@@ -186,7 +186,7 @@ public class EmojiFragment extends Fragment {
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
             if (settings != null) {
-                ImageView view = createEmojiImageView();
+                ImageView view = createRecentmojiImageView();
                 try {
                     String itemKey = settings.getCustomEmojiMap().get(getItem(position));
                     switch (settings.getResourceLocation()) {
@@ -278,6 +278,13 @@ public class EmojiFragment extends Fragment {
     private ImageView createEmojiImageView() {
         SquareImageView iv = new SquareImageView(getActivity());
         iv.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+        iv.setPadding(padding, padding, padding, padding);
+        return iv;
+    }
+
+    private ImageView createRecentmojiImageView() {
+        SquareImageView iv = new SquareImageView(getActivity());
+        iv.setLayoutParams(new GridView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, GridView.LayoutParams.MATCH_PARENT));
         iv.setPadding(padding, padding, padding, padding);
         return iv;
     }
