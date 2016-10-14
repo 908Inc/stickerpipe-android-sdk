@@ -163,16 +163,22 @@ public class TasksManager {
 
     private void startNextTask() {
         if (currentTask == null) {
-            if (Utils.isNetworkAvailable(mContext)) {
-                Task task = StorageManager.getInstance().getFirstPendingTask();
-                if (task != null) {
-                    executeTask(task);
+            try {
+                if (Utils.isNetworkAvailable(mContext)) {
+                    Task task = StorageManager.getInstance().getFirstPendingTask();
+                    if (task != null) {
+                        executeTask(task);
+                    } else {
+                        StorageManager.getInstance().setAllTasksPending();
+                        EventBus.getDefault().post(new PendingTasksCompletedEvent());
+                    }
                 } else {
                     StorageManager.getInstance().setAllTasksPending();
-                    EventBus.getDefault().post(new PendingTasksCompletedEvent());
                 }
-            } else {
-                StorageManager.getInstance().setAllTasksPending();
+            } catch (IllegalArgumentException e){
+                // Unusual behavior when content provider can't process specific uri
+                // Appears for some clients when closing app
+                Logger.e(TAG, e);
             }
         }
     }
