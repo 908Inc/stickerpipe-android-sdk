@@ -246,6 +246,8 @@ public class StickersFragment extends Fragment implements LoaderManager.LoaderCa
             View emptyView = new View(getActivity());
             emptyView.setMinimumWidth(tabSize + shopDividerWidth);
             emptyTab.setCustomView(emptyView);
+            // prevent all touches from empty tab
+            emptyView.setOnTouchListener((v, event) -> true);
             mSlidingTabLayout.addTab(emptyTab);
             shopView.setColorFilter(ContextCompat.getColor(getContext(), R.color.sp_stickers_tab_icons_filter), PorterDuff.Mode.SRC_IN);
             CompatUtils.setBackgroundDrawable(shopView,
