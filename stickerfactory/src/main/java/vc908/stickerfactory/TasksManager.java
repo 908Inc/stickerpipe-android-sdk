@@ -178,7 +178,6 @@ public class TasksManager {
             } catch (IllegalArgumentException e){
                 // Unusual behavior when content provider can't process specific uri
                 // Appears for some clients when closing app
-                Logger.e(TAG, e);
             }
         }
     }

@@ -89,7 +89,7 @@ public class StorageManager extends PreferenceHelper {
     private static final String PREF_KEY_USER_SHOP_CONTENT_VISIT_LAST_MODIFIED = "pref_key_user_shop_content_visit_last_modified";
     private static final String PREF_KEY_PACK_TO_SHOW_NAME = "pref_key_pack_to_show";
     private static final String PREF_KEY_MARKED_PACK_PREFIX = "pref_key_marked_pack_prefix_";
-//    private static final String PREF_KEY_FILTERS = "pref_key_filters";
+    //    private static final String PREF_KEY_FILTERS = "pref_key_filters";
     private static final String PREF_KEY_USER_SPLIT_GROUP = "pref_key_user_split_group";
 
     private final AsyncQueryHandler asyncQueryHandler;
@@ -258,28 +258,32 @@ public class StorageManager extends PreferenceHelper {
      */
     public void sendAnalyticsEvents() {
         if (Utils.isNetworkAvailable(mContext)) {
-            AnalyticsCursor cursor = new AnalyticsSelection().query(mContext.getContentResolver());
-            if (cursor.getCount() > 0) {
-                JSONArray data = new JSONArray();
-                while (cursor.moveToNext()) {
-                    JSONObject obj = new JSONObject();
-                    try {
-                        obj.put("category", cursor.getCategory());
-                        obj.put("action", cursor.getAction());
-                        obj.put("label", cursor.getLabel());
-                        obj.put("time", cursor.getEventtime());
-                        if (cursor.getEventCount() != null && cursor.getEventCount() > 0) {
-                            obj.put("value", cursor.getEventCount());
+            try {
+                AnalyticsCursor cursor = new AnalyticsSelection().query(mContext.getContentResolver());
+                if (cursor.getCount() > 0) {
+                    JSONArray data = new JSONArray();
+                    while (cursor.moveToNext()) {
+                        JSONObject obj = new JSONObject();
+                        try {
+                            obj.put("category", cursor.getCategory());
+                            obj.put("action", cursor.getAction());
+                            obj.put("label", cursor.getLabel());
+                            obj.put("time", cursor.getEventtime());
+                            if (cursor.getEventCount() != null && cursor.getEventCount() > 0) {
+                                obj.put("value", cursor.getEventCount());
+                            }
+                            data.put(obj);
+                        } catch (JSONException e) {
+                            Logger.e(TAG, "Can't create analytics request", e);
                         }
-                        data.put(obj);
-                    } catch (JSONException e) {
-                        Logger.e(TAG, "Can't create analytics request", e);
                     }
+                    Logger.d(TAG, "Send analytics data: " + data);
+                    NetworkManager.getInstance().sendAnalyticsData(data);
                 }
-                Logger.d(TAG, "Send analytics data: " + data);
-                NetworkManager.getInstance().sendAnalyticsData(data);
+                cursor.close();
+            } catch (IllegalArgumentException e) {
+                // Unusual behavior when content provider can't process specific uri
             }
-            cursor.close();
         }
     }
 
