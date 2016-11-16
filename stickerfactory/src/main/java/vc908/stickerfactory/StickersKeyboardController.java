@@ -433,7 +433,7 @@ public class StickersKeyboardController {
                 ImageView iv = new SquareHeightImageView(contextReference.get());
                 RecyclerView.LayoutParams lp = new RecyclerView.LayoutParams(RecyclerView.LayoutParams.MATCH_PARENT, RecyclerView.LayoutParams.MATCH_PARENT);
                 iv.setLayoutParams(lp);
-                iv.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
+                iv.setScaleType(ImageView.ScaleType.FIT_XY);
                 iv.setPadding(padding, padding, padding, padding);
                 return new ViewHolder(iv);
             } else {

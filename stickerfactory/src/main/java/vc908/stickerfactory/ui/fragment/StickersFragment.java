@@ -69,8 +69,8 @@ import vc908.stickerfactory.utils.Utils;
  */
 
 public class StickersFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
-    private static final String EMOJI_TAB_KEY = "emoji_tab";
-    private static final String RECENT_TAB_KEY = "recent_tab";
+    public static final String TAB_EMOJI = "emoji_tab";
+    public static final String TAB_RECENT = "recent_tab";
     private static final int PACKS_LOADER_ID = Utils.atomicInteger.incrementAndGet();
     private static final String TAG = StickersFragment.class.getSimpleName();
     public static final String SEARCH_TAB_KEY = "search_tab";
@@ -169,17 +169,17 @@ public class StickersFragment extends Fragment implements LoaderManager.LoaderCa
             firstTabs.add(SEARCH_TAB_KEY);
         }
         if (isEmojiAvailable()) {
-            firstTabs.add(EMOJI_TAB_KEY);
+            firstTabs.add(TAB_EMOJI);
         }
         if (StickersManager.hideEmptyRecentTab) {
             if (StorageManager.recentStickersCount < 0) {
                 StorageManager.getInstance().updateRecentStickersCount();
             }
             if (StorageManager.recentStickersCount > 0) {
-                firstTabs.add(RECENT_TAB_KEY);
+                firstTabs.add(TAB_RECENT);
             }
         } else {
-            firstTabs.add(RECENT_TAB_KEY);
+            firstTabs.add(TAB_RECENT);
         }
         stickerTabs.addAll(firstTabs);
     }
@@ -225,7 +225,7 @@ public class StickersFragment extends Fragment implements LoaderManager.LoaderCa
         }
         mSlidingTabLayout.addTab(createTab(R.drawable.sp_ic_settings, CollectionsActivity.class, tabSize));
 
-        int tabToSelectPosition = firstTabs.indexOf(RECENT_TAB_KEY);
+        int tabToSelectPosition = firstTabs.indexOf(StickersManager.defaultTab);
         if (tabToSelectPosition < 0) {
             // if recent tab disabled - select firs pack
             tabToSelectPosition = firstTabs.size();
@@ -472,9 +472,9 @@ public class StickersFragment extends Fragment implements LoaderManager.LoaderCa
             String packName = stickerTabs.get(position);
             if (SEARCH_TAB_KEY.equals(packName)) {
                 return getSearchFragment();
-            } else if (EMOJI_TAB_KEY.equals(packName)) {
+            } else if (TAB_EMOJI.equals(packName)) {
                 return getEmojiFragmnet();
-            } else if (RECENT_TAB_KEY.equals(packName)) {
+            } else if (TAB_RECENT.equals(packName)) {
                 return getRecentStickersFragment();
             } else {
                 return getStickersFragment(packName);
@@ -543,7 +543,7 @@ public class StickersFragment extends Fragment implements LoaderManager.LoaderCa
 
         public int getTabImageColorFilter(int position) {
             String packName = stickerTabs.get(position);
-            if (SEARCH_TAB_KEY.equals(packName) || EMOJI_TAB_KEY.equals(packName) || RECENT_TAB_KEY.equals(packName)) {
+            if (SEARCH_TAB_KEY.equals(packName) || TAB_EMOJI.equals(packName) || TAB_RECENT.equals(packName)) {
                 return R.color.sp_stickers_tab_icons_filter;
             } else {
                 return 0;
@@ -565,9 +565,9 @@ public class StickersFragment extends Fragment implements LoaderManager.LoaderCa
             String packName = getPackName(position);
             if (SEARCH_TAB_KEY.equals(packName)) {
                 tabView.setImageResource(R.drawable.sp_ic_search);
-            } else if (EMOJI_TAB_KEY.equals(packName)) {
+            } else if (TAB_EMOJI.equals(packName)) {
                 tabView.setImageResource(R.drawable.sp_ic_emoji);
-            } else if (RECENT_TAB_KEY.equals(packName)) {
+            } else if (TAB_RECENT.equals(packName)) {
                 tabView.setImageResource(R.drawable.sp_ic_recent);
             } else {
                 showTabImage(packName, tabView);

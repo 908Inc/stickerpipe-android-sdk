@@ -22,6 +22,7 @@ import vc908.stickerfactory.billing.Prices;
 import vc908.stickerfactory.model.StickersPack;
 import vc908.stickerfactory.provider.StickersProvider;
 import vc908.stickerfactory.ui.activity.ShopWebViewActivity;
+import vc908.stickerfactory.ui.fragment.StickersFragment;
 import vc908.stickerfactory.utils.Logger;
 import vc908.stickerfactory.utils.NamesHelper;
 import vc908.stickerfactory.utils.Utils;
@@ -45,6 +46,7 @@ public class StickersManager {
     private static EmojiSettingsBuilder emojiSettingsBuilder;
     private static Prices prices;
     public static boolean useMaxImagesSize = false;
+    public static String defaultTab = StickersFragment.TAB_RECENT;
 
     /**
      * Manager initialization. Must be call before using.
