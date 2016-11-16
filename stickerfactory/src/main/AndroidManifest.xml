@@ -15,13 +15,15 @@
         <activity
             android:name=".ui.activity.CollectionsActivity"
             android:launchMode="singleTask"
-            android:theme="@style/Theme.AppCompat.NoActionBar"/>
+            android:theme="@style/Theme.AppCompat.NoActionBar"
+            android:excludeFromRecents="true"/>
         <activity
             android:name=".ui.activity.ShopWebViewActivity"
             android:configChanges="orientation"
             android:screenOrientation="portrait"
             android:launchMode="singleInstance"
-            android:theme="@style/Theme.AppCompat.NoActionBar"/>
+            android:theme="@style/Theme.AppCompat.NoActionBar"
+            android:excludeFromRecents="true"/>
 
     </application>
 
