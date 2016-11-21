@@ -1,0 +1,3 @@
+[submodule "stickerfactory"]
+	path = stickerfactory
+	url = https://github.com/908Inc/stickerfactory.git
