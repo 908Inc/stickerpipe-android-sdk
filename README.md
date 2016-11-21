@@ -3,11 +3,53 @@
 This project contains source code of Stickerpipe Android SDK, GCM integration module and integration sample.
 You can find complete integration documentation and sample [here](https://github.com/908Inc/stickerpipe-chat-sample)
 
-## Credits
+To clone project with submodules, use next command
+```
+git clone --recursive
+```
 
-Stickerpipe
+If you want add stickerfactory module to your existing project, follow next steps
+* add stickerfactory repository as submodules
+```
+git submodule add https://github.com/908Inc/stickerfactory.git
+```
+* at settings.gradle add
+```
+include ':app', 'stickerfactory'
+```
+* at root build.gradle add retrolambda and variables
+```
+buildscript {
+    repositories {
+        jcenter()
+    }
+    dependencies {
+        classpath 'com.android.tools.build:gradle:2.2.2'
+        classpath 'me.tatarka:gradle-retrolambda:3.1.0'
 
-## Contact
+    }
+}
+allprojects {
+    repositories {
+        jcenter()
+    }
+}
+ext.sdkVersionName = "0.14.2"
+ext.minifyEnableMode = true
+ext.groupName = "vc908.stickers"
+ext.artifactoryUrl = ""
+ext.artifactoryUsername = ""
+ext.artifactoryPass = ""
+```
+* At project app build.gradle add dependency
+```
+dependencies {
+    ...
+    compile project(':stickerfactory')
+}
+```
+
+## Contacts
 
 i@stickerpipe.com
 
