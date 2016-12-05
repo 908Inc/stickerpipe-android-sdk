@@ -34,7 +34,7 @@ allprojects {
         jcenter()
     }
 }
-ext.sdkVersionName = "0.14.2"
+ext.sdkVersionName = "0.14.4"
 ext.minifyEnableMode = true
 ext.groupName = "vc908.stickers"
 ext.artifactoryUrl = ""
