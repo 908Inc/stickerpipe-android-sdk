@@ -26,7 +26,7 @@ import vc908.stickerfactory.StickersKeyboardController;
 import vc908.stickerfactory.StickersManager;
 import vc908.stickerfactory.ui.OnStickerSelectedListener;
 import vc908.stickerfactory.ui.fragment.StickersFragment;
-import vc908.stickerfactory.ui.view.BadgedStickersButton;
+import vc908.stickerfactory.ui.view.BadgedButton;
 import vc908.stickerfactory.ui.view.StickersKeyboardLayout;
 import vc908.stickerfactory.utils.CompatUtils;
 import vc908.stickerpipe.gcmintegration.NotificationManager;
@@ -81,7 +81,7 @@ public class MainActivity extends AppCompatActivity {
         }
         stickersFragment.setOnStickerSelectedListener(stickerSelectedListener);
 
-        BadgedStickersButton stickerButton = ((BadgedStickersButton) findViewById(R.id.stickers_btn));
+        BadgedButton stickerButton = ((BadgedButton) findViewById(R.id.stickers_btn));
         View stickersFrame = findViewById(R.id.frame);
         View chatContentGroup = findViewById(R.id.chat_content);
         RecyclerView suggestsList = (RecyclerView) findViewById(R.id.suggests_list);
