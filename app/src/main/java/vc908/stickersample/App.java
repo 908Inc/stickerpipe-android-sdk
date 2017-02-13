@@ -10,7 +10,6 @@ import java.util.Map;
 import io.fabric.sdk.android.Fabric;
 import vc908.stickerfactory.StickersManager;
 import vc908.stickerfactory.User;
-import vc908.stickerfactory.billing.Prices;
 import vc908.stickerfactory.utils.Utils;
 import vc908.stickerpipe.gcmintegration.GcmManager;
 import vc908.stickerpipe.jpushintegration.JpushManager;
@@ -43,7 +42,7 @@ public class App extends Application {
         userData.put(User.KEY_GENDER, User.GENDER_MALE);
         userData.put(User.KEY_AGE, String.valueOf(30));
         // Set user id
-        StickersManager.setUser(Utils.getDeviceId(this) + Utils.getVersionCode(this), userData);
+        StickersManager.setUser(Utils.getDeviceId(this) + Utils.getVersionCode(this) + "g", userData);
         // Set shop class with internal currency charging functionality
         StickersManager.setShopClass(ShopActivity.class);
         // Set sender id for GCM
@@ -51,10 +50,10 @@ public class App extends Application {
         // Set push notification manager for handling Stickerpipe notifications
         GcmManager.setPushNotificationManager(new NotificationManager());
         // Set prices for packs
-        StickersManager.setPrices(new Prices()
-                .setPricePointB("$0.99", 0.99f)
-                .setPricePointC("$1.99", 1.99f)
-        );
+//        StickersManager.setPrices(new Prices()
+//                .setPricePointB("$0.99", 0.99f)
+//                .setPricePointC("$1.99", 1.99f)
+//        );
         JpushManager.init(this);
     }
 }
