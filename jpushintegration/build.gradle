@@ -2,8 +2,8 @@ apply plugin: 'com.android.library'
 apply plugin: "maven"
 
 android {
-    compileSdkVersion 23
-    buildToolsVersion "23.0.3"
+    compileSdkVersion 25
+    buildToolsVersion '25.0.3'
 
     sourceSets {
         main {
@@ -13,7 +13,7 @@ android {
 
     defaultConfig {
         minSdkVersion 14
-        targetSdkVersion 23
+        targetSdkVersion 25
         versionCode 1
         versionName rootProject.sdkVersionName
     }
@@ -29,7 +29,7 @@ dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     compile project(':stickerfactory')
     compile project(':gcmintegration')
-    compile 'com.google.android.gms:play-services-base:9.0.2'
+    compile 'com.google.android.gms:play-services-base:10.2.6'
 }
 
 // Publish archive task

@@ -6,8 +6,7 @@ buildscript {
         }
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:2.2.3'
-        classpath 'me.tatarka:gradle-retrolambda:3.1.0'
+        classpath 'com.android.tools.build:gradle:3.0.0-alpha1'
     }
 }
 
@@ -32,7 +31,7 @@ try {
     throw new GradleException("Can't load configs file");
 }
 
-ext.sdkVersionName = "0.14.5"
+ext.sdkVersionName = "0.15.0"
 ext.minifyEnableMode = true
 ext.groupName = "vc908.stickers"
 
