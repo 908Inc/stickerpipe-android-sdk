@@ -31,8 +31,8 @@ try {
     throw new GradleException("Can't load configs file");
 }
 
-ext.sdkVersionName = "0.15.0"
-ext.minifyEnableMode = true
+ext.sdkVersionName = "0.15.1"
+ext.minifyEnableMode = false
 ext.groupName = "vc908.stickers"
 
 ext.artifactoryUrl = props.getProperty("ARTIFACTORY_URL")
