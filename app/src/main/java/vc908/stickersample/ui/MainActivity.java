@@ -81,11 +81,11 @@ public class MainActivity extends AppCompatActivity {
         }
         stickersFragment.setOnStickerSelectedListener(stickerSelectedListener);
 
-        BadgedButton stickerButton = ((BadgedButton) findViewById(R.id.stickers_btn));
+        BadgedButton stickerButton = findViewById(R.id.stickers_btn);
         View stickersFrame = findViewById(R.id.frame);
         View chatContentGroup = findViewById(R.id.chat_content);
-        RecyclerView suggestsList = (RecyclerView) findViewById(R.id.suggests_list);
-        StickersKeyboardLayout stickersLayout = (StickersKeyboardLayout) findViewById(R.id.sizeNotifierLayout);
+        RecyclerView suggestsList = findViewById(R.id.suggests_list);
+        StickersKeyboardLayout stickersLayout = findViewById(R.id.sizeNotifierLayout);
         stickersKeyboardController = new StickersKeyboardController.Builder(this)
                 .setStickersKeyboardLayout(stickersLayout)
                 .setStickersFragment(stickersFragment)

@@ -3,6 +3,7 @@ package vc908.stickersample;
 import android.app.Application;
 
 import com.crashlytics.android.Crashlytics;
+import com.squareup.leakcanary.LeakCanary;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -55,5 +56,7 @@ public class App extends Application {
 //                .setPricePointC("$1.99", 1.99f)
 //        );
         JpushManager.init(this);
+
+        LeakCanary.install(this);
     }
 }
